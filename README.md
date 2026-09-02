@@ -1,6 +1,6 @@
-# pp-assinatura
+# subsight
 
-**Subsight** — assinatura digital com slots parte+papel+vínculo (Prepara Portugal)
+Assinatura digital com slots parte+papel+vínculo (Prepara Portugal)
 
 **Status:** backend e frontend construídos e testados de ponta a ponta pela
 UI real (criação de documento, assinatura com checagem de legitimidade,
@@ -10,6 +10,8 @@ conclusão automática, verificação pública, anulação).
 
 Documentação completa (PRDs e decisões) em
 [prepara-portugal-docs](https://github.com/projetoempresaficticia/prepara-portugal-docs).
+
+Site: https://projetoempresaficticia.github.io/subsight/
 
 ## Identidade visual (decidida)
 
