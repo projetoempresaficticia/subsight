@@ -17,9 +17,30 @@
 body {
   margin: 0;
   font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
-  background: var(--ss-bg);
+  background: var(--ss-texto);
   color: var(--ss-texto);
   position: relative;
+  min-height: 100vh;
+  padding: clamp(0px, 3vw, 28px);
+}
+
+/* Moldura preta (--ss-texto, já aprovada) ao redor de todo o app — em vez
+   de deixar o "resto" da tela em branco puro, o app inteiro vira um
+   cartão branco dentro dessa moldura, como nas referências que o Germano
+   mandou (página "Bauhaus": moldura colorida + cartão branco por dentro).
+   Aparece em toda página, não só no login — resolve o fundo branco liso
+   de ponta a ponta do app, não só a tela de entrada. */
+.app-shell {
+  background: var(--ss-bg);
+  color: var(--ss-texto);
+  max-width: 1080px;
+  margin: 0 auto;
+  border-radius: 24px;
+  overflow: hidden;
+}
+@media (max-width: 640px) {
+  body { padding: 0; }
+  .app-shell { border-radius: 0; }
 }
 
 /* ---- Identidade Bauhaus ----

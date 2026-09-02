@@ -43,21 +43,28 @@ Site: https://projetoempresaficticia.github.io/subsight/
      sobreposição, mas deixou o resto da página "completamente branca"
      (queixa do Germano); a grade só aparecia em miniatura, nunca com
      presença de verdade.
-  4. **Versão atual:** a página de login (`index.html`, único momento de
-     "vitrine" do app — as outras são telas de trabalho: lista, documento,
-     formulário) ganhou um **hero de verdade**: grade 3×3 grande dentro de
-     um cartão preto arredondado (`.hero-entrar-arte`, `aspect-ratio:1`, até
-     360px) ao lado do formulário de entrar, com título/subtítulo — adaptado
-     de 6 imagens de referência que o Germano mandou (páginas tipo Todoist,
-     "SOLID", "Branding X" e uma landing chamada literalmente "Bauhaus":
-     todas usam a mesma ideia — bloco geométrico grande e ousado na
-     vitrine/hero, ícones pequenos e discretos nas telas de trabalho). As
-     telas de trabalho continuam só com o `.icone-app` do cabeçalho — bloco
-     grande ali brigaria com tabela/formulário/preview de PDF, o que também
-     bate com o padrão das próprias referências (a versão mobile mandada
-     antes também usa arte grande só na tela de onboarding, não nos
-     dashboards). Responsivo: empilha e encolhe (até 260px) em telas
-     estreitas, nunca esconde.
+  4. A página de login ganhou um hero de verdade (grade grande dentro de
+     um cartão preto ao lado do formulário) — resolveu a vitrine, mas o
+     Germano apontou que ainda sobrava "espaço em branco" ao lado do
+     cartão de login, e que o fundo continuava liso depois de entrar no
+     app (lista de documentos, documento, etc.) — ele mandou 6
+     referências de novo para deixar claro: páginas tipo Todoist, "SOLID",
+     "Branding X" e uma landing chamada literalmente "Bauhaus" — o padrão
+     comum entre elas não é só "tenha um bloco geométrico grande", é
+     **o app inteiro vive dentro de uma moldura colorida** (a referência
+     "Bauhaus" é a mais literal: moldura amarela cheia + cartão branco
+     arredondado por dentro, com o bloco geométrico como um painel dentro
+     desse cartão).
+  5. **Versão atual:** todas as páginas (login, lista, criar, documento,
+     verificar) ficam dentro de um `.app-shell` — um cartão branco
+     arredondado, com margem, sobre um fundo preto (`--ss-texto`, já
+     aprovada, nenhuma cor nova) que cobre a tela inteira. Isso resolve os
+     dois pontos de uma vez: o "espaço em branco" do login virou moldura
+     preta de propósito (não sobra mais vazio ao lado do cartão), e todo
+     o resto do app — inclusive depois de logar — passa a viver dentro
+     dessa moldura, não mais num fundo branco liso de ponta a ponta.
+     `.app-shell` encolhe até a borda da tela em mobile (sem moldura) para
+     não desperdiçar espaço numa tela já pequena.
 - UI kit: avaliação em andamento (cota do plano Figma Starter é mensal, só
   20 chamadas) — Krinet visto parcialmente (botões, ótima cobertura de
   estados) como referência provisória; ver
