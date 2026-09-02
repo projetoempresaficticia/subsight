@@ -24,9 +24,14 @@ Site: https://projetoempresaficticia.github.io/subsight/
   `.claude/skills/figma-icons/cache/`
 - Identidade visual **Bauhaus** (pedido do Germano): logotipo geométrico
   (círculo + quadrado + triângulo sobrepostos) no cabeçalho de cada página,
-  e uma composição decorativa fixa (círculo, quadrado, triângulo, linha
-  diagonal) no canto da tela — tudo dentro da paleta já fixada, sem cores
-  novas.
+  e uma composição decorativa fixa no canto da tela — tudo dentro da paleta
+  já fixada, sem cores novas. A primeira versão usava formas soltas
+  flutuando (círculo, quadrado, triângulo, linha) e foi rejeitada ("esquisito")
+  por não parecer Bauhaus de verdade; a versão atual é uma **grade 3×3 de
+  ladrilhos que se encaixam** (quartos/meios-círculo via `clipPath` +
+  `circle` posicionado no canto/aresta da célula, triângulo, quadrados
+  sólidos), adaptada de uma imagem de referência fornecida pelo Germano —
+  o ponto do estilo Bauhaus é o encaixe sem folgas, não formas soltas.
 - UI kit: avaliação em andamento (cota do plano Figma Starter é mensal, só
   20 chamadas) — Krinet visto parcialmente (botões, ótima cobertura de
   estados) como referência provisória; ver
@@ -87,10 +92,13 @@ Site: https://projetoempresaficticia.github.io/subsight/
   `<iframe>` — precisa ser canvas para capturar clique e converter em
   posição na página); clicar no preview enquanto um slot está "assinando"
   marca onde fica a assinatura, um botão "Confirmar assinatura nesta
-  posição" chama `ass_assinar` com essa posição, e o carimbo fica visível
-  ali (com o nome do slot) depois de assinado, inclusive após recarregar a
-  página. Botão de baixar com ícone (`download-01.svg`) em vez do nome cru
-  do ficheiro.
+  posição" chama `ass_assinar` com essa posição. O carimbo mostra o
+  **nome do assinante e a cédula abaixo do nome** (não o nome do slot) —
+  enquanto a posição ainda não foi confirmada, mostra o nome/cédula da
+  própria pessoa logada (é ela quem vai assinar); depois de confirmado,
+  busca o nome em `pessoas` a partir da cédula gravada em
+  `preenchido_por`, inclusive após recarregar a página. Botão de baixar
+  com ícone (`download-01.svg`) em vez do nome cru do ficheiro.
 - `verificar.html`/`verificar.js` — verificação pública (sem login) por
   `ass_verificar`, que já era pública por design.
 
@@ -133,6 +141,22 @@ errado) para `getViewport`, um `ReferenceError` silencioso que deixava o
 preview simplesmente escondido. Corrigido, testado clicando de fato no
 canvas, confirmando a posição capturada, assinando, e confirmando que o
 carimbo aparece na posição certa mesmo depois de recarregar a página.
+
+Depois, a grade Bauhaus v2 e o carimbo nome+cédula foram testados juntos,
+pela UI real servida localmente (login como professor real via
+`agent-browser`): grade decorativa conferida por screenshot nas 4 páginas,
+documento de teste criado com um PDF sintético válido, marcador provisório
+conferido mostrando nome+cédula da própria pessoa logada ao clicar no
+preview, e o carimbo já-assinado conferido mostrando nome+cédula buscados
+de `pessoas` pela cédula gravada. A assinatura de fato não pôde ser
+confirmada nesse teste porque o professor de bootstrap não tem
+`empresa_id` (o slot `declarante` exige vínculo de empresa) — comportamento
+esperado do `ass_assinar`, não um bug; o carimbo já-assinado foi conferido
+chamando `desenharMarcadores` diretamente com um slot sintético, o que
+ainda exercita a consulta real a `pessoas`. Documento de teste anulado no
+fim (não existe policy de delete em `documentos`/`documento_slots` — só
+anular; o ficheiro no Storage foi removido à parte, que tem policy de
+delete restrita ao professor).
 
 ## Advisory de segurança (esperado)
 

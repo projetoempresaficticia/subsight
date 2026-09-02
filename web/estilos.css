@@ -28,41 +28,18 @@ body {
 .cabecalho-marca { display: flex; align-items: center; gap: 0.6rem; }
 .cabecalho-marca strong { font-size: 1.1rem; letter-spacing: -0.01em; }
 
-/* Composição decorativa fixa no canto — sutil, não disputa com o conteúdo */
+/* Composição decorativa: grade de formas que se encaixam (meio-círculos,
+   quartos de círculo, triângulo, blocos sólidos) — tile Bauhaus, não
+   formas soltas flutuando. Fixa num canto, contida numa caixa própria. */
 .formas-bauhaus {
   position: fixed;
-  inset: 0;
+  top: 64px;
+  right: -40px;
   z-index: -1;
-  overflow: hidden;
+  opacity: 0.9;
   pointer-events: none;
 }
-.formas-bauhaus span { position: absolute; display: block; }
-.fb-circulo {
-  width: 260px; height: 260px; border-radius: 50%;
-  background: var(--ss-destaque);
-  top: -90px; right: -90px;
-}
-.fb-quadrado {
-  width: 140px; height: 140px;
-  background: var(--ss-texto);
-  bottom: -40px; right: 180px;
-  transform: rotate(12deg);
-}
-.fb-triangulo {
-  width: 0; height: 0;
-  border-left: 90px solid transparent;
-  border-right: 90px solid transparent;
-  border-bottom: 150px solid var(--ss-fundo-suave);
-  border-bottom-color: #F3F3F3;
-  bottom: -20px; left: -30px;
-}
-.fb-linha {
-  width: 420px; height: 3px;
-  background: var(--ss-destaque-escuro);
-  top: 140px; right: -80px;
-  transform: rotate(-18deg);
-  opacity: 0.5;
-}
+.formas-bauhaus svg { display: block; width: 220px; height: 220px; }
 
 header {
   display: flex;
@@ -220,27 +197,31 @@ td a:hover { color: var(--ss-destaque-escuro); }
 .marcador-assinatura {
   position: absolute;
   transform: translate(-50%, -100%);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
   pointer-events: none;
 }
-.marcador-assinatura .ponto {
-  width: 14px; height: 14px; border-radius: 50%;
-  background: var(--ss-destaque-escuro);
-  border: 2px solid #fff;
-  box-shadow: 0 1px 4px rgba(0,0,0,0.3);
-}
-.marcador-assinatura .etiqueta {
-  margin-top: 2px;
-  background: #000;
-  color: #fff;
-  font-size: 0.6rem;
-  padding: 0.1rem 0.4rem;
-  border-radius: 4px;
+.marcador-assinatura .cartao-assinatura {
+  border-top: 2px solid var(--ss-destaque-escuro);
+  padding: 0.2rem 0.5rem 0.3rem;
+  background: rgba(255, 255, 255, 0.94);
+  box-shadow: 0 2px 6px rgba(0,0,0,0.18);
   white-space: nowrap;
+  text-align: center;
+  min-width: 90px;
 }
-.marcador-provisorio .ponto { background: var(--ss-texto); }
+.marcador-assinatura .nome-assinante {
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: var(--ss-texto);
+  font-family: "Brush Script MT", cursive;
+  font-style: italic;
+}
+.marcador-assinatura .id-assinante {
+  font-size: 0.55rem;
+  color: var(--ss-secundario);
+  font-family: "SFMono-Regular", Consolas, monospace;
+  margin-top: 0.05rem;
+}
+.marcador-provisorio .cartao-assinatura { border-top-color: var(--ss-texto); opacity: 0.75; }
 
 .campo-slot-dinamico {
   border: 1px dashed var(--ss-borda);

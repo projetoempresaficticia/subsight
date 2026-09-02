@@ -19,6 +19,8 @@ const documentoId = new URLSearchParams(window.location.search).get('id');
 
 let slotEscolhendo = null; // slot que está aguardando clique de posição
 let posicaoEscolhida = null; // {x, y} em frações 0–1
+let euNome = '';
+let euCedula = '';
 
 function badgeEstado(estado) {
   const rotulos = { pendente: 'Pendente', completo: 'Completo', anulado: 'Anulado' };
@@ -31,16 +33,41 @@ function mostrarMsg(texto, ok) {
   el.className = 'msg ' + (ok ? 'sucesso' : 'erro');
 }
 
-function desenharMarcadores(slotsAssinados) {
-  marcadoresEl.innerHTML = slotsAssinados
-    .filter((s) => s.pos_x != null && s.pos_y != null)
-    .map(
-      (s) => `
+async function carregarMeuPerfil() {
+  const { data } = await sb.auth.getUser();
+  if (!data.user) return;
+  const { data: pessoa } = await sb
+    .from('pessoas')
+    .select('nome, cedula')
+    .eq('id', data.user.id)
+    .single();
+  if (pessoa) {
+    euNome = pessoa.nome;
+    euCedula = pessoa.cedula;
+  }
+}
+
+async function desenharMarcadores(slotsAssinados) {
+  const assinados = slotsAssinados.filter((s) => s.pos_x != null && s.pos_y != null);
+
+  const cedulas = [...new Set(assinados.map((s) => s.preenchido_por).filter(Boolean))];
+  let nomesPorCedula = {};
+  if (cedulas.length) {
+    const { data: pessoas } = await sb.from('pessoas').select('cedula, nome').in('cedula', cedulas);
+    nomesPorCedula = Object.fromEntries((pessoas || []).map((p) => [p.cedula, p.nome]));
+  }
+
+  marcadoresEl.innerHTML = assinados
+    .map((s) => {
+      const nome = nomesPorCedula[s.preenchido_por] || s.preenchido_por;
+      return `
       <div class="marcador-assinatura" style="left:${s.pos_x * 100}%; top:${s.pos_y * 100}%">
-        <div class="ponto"></div>
-        <div class="etiqueta">${s.slot}</div>
-      </div>`
-    )
+        <div class="cartao-assinatura">
+          <div class="nome-assinante">${nome}</div>
+          <div class="id-assinante">${s.preenchido_por}</div>
+        </div>
+      </div>`;
+    })
     .join('');
 }
 
@@ -67,7 +94,11 @@ visualizador.addEventListener('click', (ev) => {
   marcador.className = 'marcador-assinatura marcador-provisorio';
   marcador.style.left = x * 100 + '%';
   marcador.style.top = y * 100 + '%';
-  marcador.innerHTML = `<div class="ponto"></div><div class="etiqueta">${slotEscolhendo}</div>`;
+  marcador.innerHTML = `
+    <div class="cartao-assinatura">
+      <div class="nome-assinante">${euNome || '—'}</div>
+      <div class="id-assinante">${euCedula || ''}</div>
+    </div>`;
   marcadoresEl.appendChild(marcador);
 
   btnConfirmarPosicao.hidden = false;
@@ -169,7 +200,7 @@ async function carregarDocumento() {
       } catch (e) {
         visualizador.hidden = true;
       }
-      desenharMarcadores(slots || []);
+      await desenharMarcadores(slots || []);
     }
   } else {
     linkPdf.hidden = true;
@@ -228,6 +259,7 @@ async function verificarSessao() {
   const { data } = await sb.auth.getSession();
   if (data.session) {
     areaLogin.hidden = true;
+    await carregarMeuPerfil();
     carregarDocumento();
   }
 }
