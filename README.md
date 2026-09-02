@@ -22,16 +22,28 @@ Site: https://projetoempresaficticia.github.io/subsight/
   lock, shield-check, check, upload, download, mail, clock, user-profile);
   mais entram conforme a cota do Figma permitir — ver
   `.claude/skills/figma-icons/cache/`
-- Identidade visual **Bauhaus** (pedido do Germano): logotipo geométrico
-  (círculo + quadrado + triângulo sobrepostos) no cabeçalho de cada página,
-  e uma composição decorativa fixa no canto da tela — tudo dentro da paleta
-  já fixada, sem cores novas. A primeira versão usava formas soltas
-  flutuando (círculo, quadrado, triângulo, linha) e foi rejeitada ("esquisito")
-  por não parecer Bauhaus de verdade; a versão atual é uma **grade 3×3 de
-  ladrilhos que se encaixam** (quartos/meios-círculo via `clipPath` +
-  `circle` posicionado no canto/aresta da célula, triângulo, quadrados
-  sólidos), adaptada de uma imagem de referência fornecida pelo Germano —
-  o ponto do estilo Bauhaus é o encaixe sem folgas, não formas soltas.
+- Identidade visual **Bauhaus** (pedido do Germano): a marca é a própria
+  **grade 3×3 de ladrilhos que se encaixam** (quartos/meios-círculo via
+  `clipPath` + `circle` posicionado no canto/aresta da célula, triângulo,
+  quadrados sólidos) — sem cores novas, só a paleta já fixada. Passou por
+  três versões até acertar:
+  1. Formas soltas flutuando (círculo, quadrado, triângulo, linha) —
+     rejeitada ("esquisito"), não parecia Bauhaus de verdade.
+  2. A grade 3×3 certa, mas como marca-d'água flutuante (`position: fixed`)
+     num canto da tela, com um logotipo separado e pequeno (28px) no
+     cabeçalho — rejeitada por dois motivos: a marca-d'água invadia o
+     cartão de login em telas estreitas (por isso ganhou um
+     `@media (max-width:900px){display:none}` que a escondia por completo
+     no mobile), e o logotipo do cabeçalho ficou "muito pequeno e
+     desproporcional" comparado ao estilo de referência (duas imagens de
+     app mobile mandadas pelo Germano: cartão preto arredondado com o
+     padrão geométrico como arte de fundo/ícone).
+  3. **Versão atual:** um único elemento — a grade 3×3 inteira, recortada
+     num ícone de app quadrado arredondado (`.icone-app`, 48×48px) no
+     cabeçalho, do mesmo tamanho em toda página, sem posição fixa (não
+     sobrepõe nada, não precisa esconder em mobile). Sem marca-d'água
+     separada — o ícone É a marca, do jeito que o app de referência usa o
+     mesmo padrão geométrico tanto no ícone quanto em cartões maiores.
 - UI kit: avaliação em andamento (cota do plano Figma Starter é mensal, só
   20 chamadas) — Krinet visto parcialmente (botões, ótima cobertura de
   estados) como referência provisória; ver

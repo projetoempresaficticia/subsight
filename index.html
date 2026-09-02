@@ -7,59 +7,32 @@
   <link rel="stylesheet" href="web/estilos.css" />
 </head>
 <body>
-  <div class="formas-bauhaus" aria-hidden="true">
-    <svg viewBox="0 0 240 240" xmlns="http://www.w3.org/2000/svg">
-        <defs>
-          <clipPath id="bh-c00"><rect x="0" y="0" width="80" height="80" /></clipPath>
-          <clipPath id="bh-c10"><rect x="80" y="0" width="80" height="80" /></clipPath>
-          <clipPath id="bh-c20"><rect x="160" y="0" width="80" height="80" /></clipPath>
-          <clipPath id="bh-c01"><rect x="0" y="80" width="80" height="80" /></clipPath>
-          <clipPath id="bh-c11"><rect x="80" y="80" width="80" height="80" /></clipPath>
-          <clipPath id="bh-c21"><rect x="160" y="80" width="80" height="80" /></clipPath>
-          <clipPath id="bh-c02"><rect x="0" y="160" width="80" height="80" /></clipPath>
-          <clipPath id="bh-c12"><rect x="80" y="160" width="80" height="80" /></clipPath>
-          <clipPath id="bh-c22"><rect x="160" y="160" width="80" height="80" /></clipPath>
-        </defs>
-
-        <rect x="0" y="0" width="80" height="80" fill="#000" />
-
-        <g clip-path="url(#bh-c10)">
-          <circle cx="80" cy="0" r="80" fill="var(--ss-destaque)" />
-        </g>
-
-        <g clip-path="url(#bh-c20)">
-          <circle cx="200" cy="80" r="40" fill="var(--ss-secundario)" />
-        </g>
-
-        <g clip-path="url(#bh-c01)">
-          <circle cx="80" cy="120" r="40" fill="var(--ss-secundario)" />
-        </g>
-
-        <g clip-path="url(#bh-c11)">
-          <circle cx="160" cy="160" r="80" fill="var(--ss-destaque-escuro)" />
-        </g>
-
-        <g clip-path="url(#bh-c21)">
-          <circle cx="160" cy="160" r="80" fill="var(--ss-destaque)" />
-        </g>
-
-        <polygon points="0,240 80,240 80,160" fill="#000" />
-
-        <rect x="80" y="160" width="80" height="80" fill="var(--ss-fundo-suave)" stroke="var(--ss-borda)" />
-
-        <g clip-path="url(#bh-c22)">
-          <circle cx="240" cy="160" r="80" fill="var(--ss-destaque-escuro)" />
-        </g>
-      </svg>
-  </div>
-
   <header>
     <div class="cabecalho-marca">
-      <svg class="marca-bauhaus" viewBox="0 0 40 40" width="28" height="28" aria-hidden="true">
-        <circle cx="13" cy="13" r="10" fill="var(--ss-destaque)" />
-        <rect x="19" y="19" width="16" height="16" fill="#000" />
-        <polygon points="31,3 39,19 23,19" fill="none" stroke="#000" stroke-width="2" />
-      </svg>
+      <div class="icone-app" aria-hidden="true">
+        <svg viewBox="0 0 240 240" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <clipPath id="bh-c00"><rect x="0" y="0" width="80" height="80" /></clipPath>
+            <clipPath id="bh-c10"><rect x="80" y="0" width="80" height="80" /></clipPath>
+            <clipPath id="bh-c20"><rect x="160" y="0" width="80" height="80" /></clipPath>
+            <clipPath id="bh-c01"><rect x="0" y="80" width="80" height="80" /></clipPath>
+            <clipPath id="bh-c11"><rect x="80" y="80" width="80" height="80" /></clipPath>
+            <clipPath id="bh-c21"><rect x="160" y="80" width="80" height="80" /></clipPath>
+            <clipPath id="bh-c02"><rect x="0" y="160" width="80" height="80" /></clipPath>
+            <clipPath id="bh-c12"><rect x="80" y="160" width="80" height="80" /></clipPath>
+            <clipPath id="bh-c22"><rect x="160" y="160" width="80" height="80" /></clipPath>
+          </defs>
+          <rect x="0" y="0" width="80" height="80" fill="#000" />
+          <g clip-path="url(#bh-c10)"><circle cx="80" cy="0" r="80" fill="var(--ss-destaque)" /></g>
+          <g clip-path="url(#bh-c20)"><circle cx="200" cy="80" r="40" fill="var(--ss-secundario)" /></g>
+          <g clip-path="url(#bh-c01)"><circle cx="80" cy="120" r="40" fill="var(--ss-secundario)" /></g>
+          <g clip-path="url(#bh-c11)"><circle cx="160" cy="160" r="80" fill="var(--ss-destaque-escuro)" /></g>
+          <g clip-path="url(#bh-c21)"><circle cx="160" cy="160" r="80" fill="var(--ss-destaque)" /></g>
+          <polygon points="0,240 80,240 80,160" fill="#000" />
+          <rect x="80" y="160" width="80" height="80" fill="var(--ss-fundo-suave)" stroke="var(--ss-borda)" />
+          <g clip-path="url(#bh-c22)"><circle cx="240" cy="160" r="80" fill="var(--ss-destaque-escuro)" /></g>
+        </svg>
+      </div>
       <strong>Subsight</strong>
     </div>
     <nav id="nav-logado" hidden>
