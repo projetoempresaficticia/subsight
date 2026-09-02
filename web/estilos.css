@@ -41,11 +41,19 @@ body {
 }
 .formas-bauhaus svg { display: block; width: 220px; height: 220px; }
 
+@media (max-width: 900px) {
+  /* Em telas estreitas a composição decorativa não cabe sem invadir o
+     conteúdo (o cartão de login, por exemplo) — melhor escondê-la do que
+     deixá-la sobrepor texto/formulários. */
+  .formas-bauhaus { display: none; }
+}
+
 header {
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding: 1rem 1.5rem;
+  background: var(--ss-bg);
   border-bottom: 2px solid var(--ss-texto);
   position: relative;
   z-index: 1;
