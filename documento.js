@@ -49,7 +49,7 @@ async function carregarDocumento() {
 
   const { data: doc, error } = await sb
     .from('documentos')
-    .select('id, tipo, estado, conteudo, hash_conteudo, criado_em')
+    .select('id, tipo, estado, arquivo_url, nome_arquivo, hash_conteudo, criado_em')
     .eq('id', documentoId)
     .single();
 
@@ -73,9 +73,18 @@ async function carregarDocumento() {
 
   document.getElementById('d-titulo').textContent = tipoInfo ? tipoInfo.descricao : doc.tipo;
   document.getElementById('d-estado').innerHTML = badgeEstado(doc.estado);
-  document.getElementById('d-conteudo').textContent = doc.conteudo;
-  document.getElementById('d-hash').textContent = doc.hash_conteudo;
+  document.getElementById('d-hash').textContent = doc.hash_conteudo || '(sem ficheiro anexado)';
   document.getElementById('d-link-verificar').href = `verificar.html?id=${doc.id}`;
+
+  const linkPdf = document.getElementById('d-link-pdf');
+  if (doc.arquivo_url) {
+    document.getElementById('d-nome-arquivo').textContent = doc.nome_arquivo || 'Ver PDF';
+    const { data: assinada } = await sb.storage.from('documentos').createSignedUrl(doc.arquivo_url, 300);
+    linkPdf.href = assinada ? assinada.signedUrl : '#';
+    linkPdf.hidden = false;
+  } else {
+    linkPdf.hidden = true;
+  }
 
   const listaSlots = document.getElementById('d-slots');
   listaSlots.innerHTML = (slots || [])

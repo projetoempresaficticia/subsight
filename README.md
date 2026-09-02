@@ -50,11 +50,29 @@ Site: https://projetoempresaficticia.github.io/subsight/
   do `fn_e_professor()` no classcard — regra para as próximas skills:
   cuidado também com **duas tabelas se consultando uma à outra**, não só
   uma tabela a si mesma.
+- `sql/0004_upload_pdf.sql` — o documento passou a ser um **PDF enviado**,
+  não texto digitado (pedido do Germano — um app de assinatura de verdade
+  assina um ficheiro, não uma caixa de texto). Bucket `documentos` privado
+  no Storage; `ass_criar_documento` monta só o "envelope" (tipo + slots),
+  `ass_anexar_arquivo` liga o PDF já enviado e trava `hash_conteudo` — só o
+  criador, só uma vez (a policy de insert exige `hash_conteudo is null`).
+  Sem policy de update no bucket → o ficheiro não pode ser substituído
+  depois de anexado (imutabilidade real, testada: uma tentativa de
+  sobrescrever é rejeitada por RLS). `ass_assinar` recusa assinar um
+  documento sem ficheiro. O hash é calculado no **navegador**
+  (`crypto.subtle.digest('SHA-256', ...)`) no momento do envio — o Postgres
+  não tem como rebaixar/reconferir um ficheiro do Storage sozinho, por isso
+  "íntegro" em `ass_verificar` passa a significar "tem hash travado",
+  garantido pela imutabilidade do Storage em vez de recálculo ativo.
+  Delete no bucket é restrito ao professor (manutenção/testes) — sem isso,
+  nem o próprio dono conseguiria limpar um envio de teste.
 - `index.html`/`app.js` — login + lista "Meus documentos".
-- `criar.html`/`criar.js` — criar documento com campos de slot dinâmicos
-  (muda conforme o tipo escolhido: pede cédula de pessoa ou de empresa).
-- `documento.html`/`documento.js` — ver conteúdo, hash, slots (quem
-  assinou, código), assinar um slot vago, anular.
+- `criar.html`/`criar.js` — escolher tipo, enviar o PDF, preencher os
+  campos de slot dinâmicos (muda conforme o tipo: pede cédula de pessoa ou
+  de empresa).
+- `documento.html`/`documento.js` — link para o PDF (URL assinada do
+  Storage, o bucket é privado), hash, slots (quem assinou, código), assinar
+  um slot vago, anular.
 - `verificar.html`/`verificar.js` — verificação pública (sem login) por
   `ass_verificar`, que já era pública por design.
 
@@ -77,8 +95,15 @@ idempotência (assinar o mesmo slot duas vezes falha na segunda), conclusão
 automática do documento, painel do documento mostrando os dois códigos de
 assinatura, página pública de verificação (`verificar.html`) confirmando
 "Documento válido". Foi o teste pela UI real (RLS ativo, não service role)
-que pegou o bug de recursão cruzada do `sql/0003`. Dados de teste limpos no
-fim (incluindo os logins de Auth criados para o teste); o catálogo semeado
+que pegou o bug de recursão cruzada do `sql/0003`.
+
+Depois, o fluxo de PDF (`sql/0004`) foi testado à parte, também pela UI
+real: enviar um PDF de verdade, baixá-lo de volta pela URL assinada e
+confirmar que é **byte a byte idêntico** ao original (`diff` limpo),
+assinar, conferir "Documento válido" na verificação pública, e confirmar
+que uma tentativa de **sobrescrever** o PDF já enviado é rejeitada por RLS
+(imutabilidade real, não só documentada). Dados de teste limpos no fim
+(incluindo os logins de Auth e o ficheiro no Storage); o catálogo semeado
 ficou.
 
 ## Advisory de segurança (esperado)

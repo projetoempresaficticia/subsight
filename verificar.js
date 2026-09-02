@@ -31,11 +31,11 @@ async function verificar() {
   if (d.valido) {
     selo.classList.add('selo-ok');
     document.getElementById('v-titulo').textContent = 'Documento válido';
-    document.getElementById('v-subtitulo').textContent = 'Todas as assinaturas exigidas foram feitas e o conteúdo não foi alterado.';
+    document.getElementById('v-subtitulo').textContent = 'Todas as assinaturas exigidas foram feitas e o ficheiro tem a integridade travada pelo Storage.';
   } else if (!d.integro) {
     selo.classList.add('selo-erro');
-    document.getElementById('v-titulo').textContent = 'Conteúdo adulterado';
-    document.getElementById('v-subtitulo').textContent = 'O hash do conteúdo não bate com o registado na assinatura — o documento foi alterado depois.';
+    document.getElementById('v-titulo').textContent = 'Sem ficheiro confirmado';
+    document.getElementById('v-subtitulo').textContent = 'Este documento ainda não tem um PDF anexado — não pode ser assinado nem verificado.';
   } else {
     selo.classList.add('selo-aviso');
     document.getElementById('v-titulo').textContent = 'Assinaturas pendentes';

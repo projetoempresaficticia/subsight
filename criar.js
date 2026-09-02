@@ -70,8 +70,31 @@ formLogin.addEventListener('submit', async (ev) => {
   await verificarSessao();
 });
 
+async function calcularHashSHA256(arquivo) {
+  const buffer = await arquivo.arrayBuffer();
+  const digest = await crypto.subtle.digest('SHA-256', buffer);
+  return Array.from(new Uint8Array(digest))
+    .map((b) => b.toString(16).padStart(2, '0'))
+    .join('');
+}
+
 document.getElementById('form-criar').addEventListener('submit', async (ev) => {
   ev.preventDefault();
+  const msg = document.getElementById('msg-criar');
+  const btn = document.getElementById('btn-criar');
+  const arquivo = document.getElementById('arquivo').files[0];
+
+  if (!arquivo || arquivo.type !== 'application/pdf') {
+    msg.textContent = 'Escolha um ficheiro PDF.';
+    msg.className = 'msg erro';
+    return;
+  }
+  if (arquivo.size > 15 * 1024 * 1024) {
+    msg.textContent = 'Ficheiro grande demais (máx. 15 MB).';
+    msg.className = 'msg erro';
+    return;
+  }
+
   const blocos = slotsDinamicos.querySelectorAll('.campo-slot-dinamico');
   const slotsJson = Array.from(blocos).map((b) => {
     const cedula = b.querySelector('.valor-slot').value.trim();
@@ -83,19 +106,48 @@ document.getElementById('form-criar').addEventListener('submit', async (ev) => {
     };
   });
 
-  const r = await api('ass_criar_documento', {
-    p_tipo: seletorTipo.value,
-    p_conteudo: document.getElementById('conteudo').value,
-    p_slots: slotsJson,
-  });
+  btn.disabled = true;
+  msg.textContent = 'A criar o documento…';
+  msg.className = 'msg';
 
-  const msg = document.getElementById('msg-criar');
-  if (r.ok) {
-    window.location.href = `documento.html?id=${r.dados.documento_id}`;
-  } else {
-    msg.textContent = 'Erro: ' + r.erro;
+  const rCriar = await api('ass_criar_documento', { p_tipo: seletorTipo.value, p_slots: slotsJson });
+  if (!rCriar.ok) {
+    msg.textContent = 'Erro: ' + rCriar.erro;
     msg.className = 'msg erro';
+    btn.disabled = false;
+    return;
   }
+  const documentoId = rCriar.dados.documento_id;
+
+  msg.textContent = 'A enviar o PDF…';
+  const caminho = `${documentoId}/${arquivo.name}`;
+  const { error: erroUpload } = await sb.storage.from('documentos').upload(caminho, arquivo, {
+    contentType: 'application/pdf',
+  });
+  if (erroUpload) {
+    msg.textContent = 'Documento criado, mas falhou o envio do PDF: ' + erroUpload.message;
+    msg.className = 'msg erro';
+    btn.disabled = false;
+    return;
+  }
+
+  msg.textContent = 'A calcular a assinatura de integridade…';
+  const hash = await calcularHashSHA256(arquivo);
+
+  const rAnexar = await api('ass_anexar_arquivo', {
+    p_documento_id: documentoId,
+    p_arquivo_url: caminho,
+    p_nome_arquivo: arquivo.name,
+    p_hash_conteudo: hash,
+  });
+  if (!rAnexar.ok) {
+    msg.textContent = 'Erro ao finalizar: ' + rAnexar.erro;
+    msg.className = 'msg erro';
+    btn.disabled = false;
+    return;
+  }
+
+  window.location.href = `documento.html?id=${documentoId}`;
 });
 
 verificarSessao();

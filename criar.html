@@ -34,14 +34,14 @@
         <label for="tipo">Tipo de documento</label>
         <select id="tipo" required></select>
 
-        <label for="conteudo">Conteúdo</label>
-        <textarea id="conteudo" required placeholder="Texto do contrato/declaração…"></textarea>
+        <label for="arquivo">Documento (PDF)</label>
+        <input id="arquivo" type="file" accept="application/pdf" required />
 
         <div id="slots-dinamicos"></div>
 
-        <button type="submit" class="destaque">
+        <button type="submit" class="destaque" id="btn-criar">
           <img class="icone" src="web/icons/upload-01.svg" alt="" />
-          Criar documento
+          Enviar e criar documento
         </button>
         <p class="msg" id="msg-criar"></p>
       </form>
