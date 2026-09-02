@@ -55,16 +55,27 @@ Site: https://projetoempresaficticia.github.io/subsight/
      "Bauhaus" é a mais literal: moldura amarela cheia + cartão branco
      arredondado por dentro, com o bloco geométrico como um painel dentro
      desse cartão).
-  5. **Versão atual:** todas as páginas (login, lista, criar, documento,
-     verificar) ficam dentro de um `.app-shell` — um cartão branco
-     arredondado, com margem, sobre um fundo preto (`--ss-texto`, já
-     aprovada, nenhuma cor nova) que cobre a tela inteira. Isso resolve os
-     dois pontos de uma vez: o "espaço em branco" do login virou moldura
-     preta de propósito (não sobra mais vazio ao lado do cartão), e todo
-     o resto do app — inclusive depois de logar — passa a viver dentro
-     dessa moldura, não mais num fundo branco liso de ponta a ponta.
-     `.app-shell` encolhe até a borda da tela em mobile (sem moldura) para
-     não desperdiçar espaço numa tela já pequena.
+  5. Tentativa de moldura preta (`.app-shell`) ao redor do app inteiro —
+     rejeitada ("não quero algo dessa maneira"). O Germano reenviou as
+     mesmas 6 referências apontando o que ainda estava errado: **1)** não
+     é uma moldura em volta de tudo, é a própria tela de login que usa a
+     grade como pano de fundo; **2)** "não quero um quadrado do lado" — o
+     `.hero-entrar-arte` da v4 era literalmente isso, um quadrado
+     (`aspect-ratio:1`) com preenchimento interno e cantos próprios,
+     flutuando ao lado do cartão de login. Na referência "Bauhaus" a arte
+     encosta direto nas bordas do cartão-mãe (sem respiro, sem moldura
+     própria) — é fundo, não ícone.
+  6. **Versão atual:** removida a moldura preta de vez (`.app-shell`
+     revertido — o resto do app volta a ser branco liso, como antes do
+     item 5). Só a tela de login muda: `.hero-entrar` é um cartão único
+     (sem separação visual entre as duas colunas) e `.hero-entrar-arte`
+     usa a grade como **`background-image` de verdade** (data-URI SVG,
+     `background-size: cover`) preenchendo a coluna inteira, sem
+     `aspect-ratio`, sem padding, sem cantos próprios — encosta direto
+     nas bordas do cartão, exatamente como a referência. Cores do SVG
+     embutidas em hex (`#EEC1A0`, `#D9A063`, `#A9A9A9`, `#000000`,
+     `#FFFFFF`) porque um `background-image` em data-URI não lê
+     `var(--ss-*)` — são os mesmos valores da paleta, só escritos direto.
 - UI kit: avaliação em andamento (cota do plano Figma Starter é mensal, só
   20 chamadas) — Krinet visto parcialmente (botões, ótima cobertura de
   estados) como referência provisória; ver
