@@ -25,7 +25,18 @@ async function carregarCatalogo() {
   renderSlots();
 }
 
+// Um tipo é "livre" quando não tem nenhum slot fixo no catálogo: aí a
+// quantidade de assinaturas e quem assina cada uma vêm de quem cria.
+function tipoEhLivre(tipo) {
+  return !(slotsPorTipo[tipo] || []).length;
+}
+
 function renderSlots() {
+  if (tipoEhLivre(seletorTipo.value)) {
+    renderSlotsLivres();
+    return;
+  }
+
   const slots = slotsPorTipo[seletorTipo.value] || [];
   slotsDinamicos.innerHTML = slots
     .map((s) => {
@@ -44,6 +55,55 @@ function renderSlots() {
         </div>`;
     })
     .join('');
+}
+
+function renderSlotsLivres() {
+  slotsDinamicos.innerHTML = `
+    <label for="qtd-assinaturas">Quantas assinaturas este documento precisa?</label>
+    <input id="qtd-assinaturas" type="number" min="1" max="10" value="2" />
+    <div id="assinantes-livres"></div>`;
+
+  const campoQtd = document.getElementById('qtd-assinaturas');
+  campoQtd.addEventListener('input', renderAssinantesLivres);
+  renderAssinantesLivres();
+}
+
+function renderAssinantesLivres() {
+  const campoQtd = document.getElementById('qtd-assinaturas');
+  const alvo = document.getElementById('assinantes-livres');
+  let qtd = parseInt(campoQtd.value, 10);
+  if (!Number.isFinite(qtd)) return;
+  qtd = Math.min(Math.max(qtd, 1), 10);
+
+  // preserva o que já foi digitado ao mudar a quantidade
+  const anteriores = Array.from(alvo.querySelectorAll('.campo-slot-dinamico')).map((b) => ({
+    vinculo: b.dataset.tipoVinculo,
+    valor: b.querySelector('.valor-slot').value,
+  }));
+
+  alvo.innerHTML = Array.from({ length: qtd }, (_, i) => {
+    const anterior = anteriores[i] || { vinculo: 'pessoa', valor: '' };
+    const ehPessoa = anterior.vinculo === 'pessoa';
+    return `
+      <div class="campo-slot-dinamico" data-slot="assinante_${i + 1}" data-tipo-vinculo="${anterior.vinculo}">
+        <label>Assinatura ${i + 1} — quem assina?</label>
+        <select class="tipo-vinculo-livre">
+          <option value="pessoa" ${ehPessoa ? 'selected' : ''}>Uma pessoa (cédula PP-...)</option>
+          <option value="empresa" ${ehPessoa ? '' : 'selected'}>Alguém de uma empresa (cédula EP-...)</option>
+        </select>
+        <input class="valor-slot" placeholder="${ehPessoa ? 'PP-2026-00001' : 'EP-2026-00001'}"
+               value="${anterior.valor.replace(/"/g, '&quot;')}" required />
+      </div>`;
+  }).join('');
+
+  alvo.querySelectorAll('.tipo-vinculo-livre').forEach((sel) => {
+    sel.addEventListener('change', () => {
+      const bloco = sel.closest('.campo-slot-dinamico');
+      bloco.dataset.tipoVinculo = sel.value;
+      bloco.querySelector('.valor-slot').placeholder =
+        sel.value === 'pessoa' ? 'PP-2026-00001' : 'EP-2026-00001';
+    });
+  });
 }
 
 seletorTipo.addEventListener('change', renderSlots);

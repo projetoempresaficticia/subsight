@@ -132,10 +132,28 @@ Site: https://projetoempresaficticia.github.io/subsight/
   independe do zoom/tamanho de ecrã usado ao assinar); `ass_assinar` aceita
   esses três parâmetros opcionais e grava onde o assinante posicionou a
   assinatura.
+- `sql/0006_documento_livre.sql` — tipo **`documento_livre`**: o criador
+  escolhe **quantas** assinaturas o documento precisa (1–10) e quem assina
+  cada uma, em vez de usar um conjunto fixo de slots. O que marca um tipo
+  como "livre" é **não ter nenhuma linha em `slots_tipo`** — daí
+  `ass_criar_documento` troca a checagem "os slots têm de bater com o
+  catálogo" por validações próprias (1–10 slots, nomes não vazios e
+  distintos, e **cada slot obrigado a nomear quem assina**). A parte que
+  não podia passar batido: sem regra em `slots_tipo`, o `ass_assinar`
+  antigo simplesmente pulava as checagens de papel/vínculo (o `record` da
+  regra vinha todo NULL), ou seja **qualquer pessoa com Carteirinha
+  assinaria qualquer slot**. Por isso `ass_assinar` passou a derivar o
+  requisito do próprio slot quando não há catálogo: `pessoa_esperada`
+  preenchida → só aquela cédula exata assina; `empresa_esperada`
+  preenchida → só quem está vinculado àquela empresa; nenhuma das duas →
+  recusa (não deveria acontecer, a criação já bloqueia).
 - `index.html`/`app.js` — login + lista "Meus documentos".
 - `criar.html`/`criar.js` — escolher tipo, enviar o PDF, preencher os
   campos de slot dinâmicos (muda conforme o tipo: pede cédula de pessoa ou
-  de empresa); ao terminar, mostra um **painel de conclusão** explícito
+  de empresa). No tipo livre, mostra um campo "quantas assinaturas?" e
+  gera esse número de blocos `assinante_N`, cada um com um seletor
+  pessoa/empresa + cédula (o que já foi digitado é preservado ao mudar a
+  quantidade). Ao terminar, mostra um **painel de conclusão** explícito
   ("Documento criado e enviado", lista de quem falta assinar, botão "Ver
   documento →") em vez de redirecionar direto sem explicação.
 - `documento.html`/`documento.js` — **preview do PDF** renderizado num
@@ -208,6 +226,20 @@ ainda exercita a consulta real a `pessoas`. Documento de teste anulado no
 fim (não existe policy de delete em `documentos`/`documento_slots` — só
 anular; o ficheiro no Storage foi removido à parte, que tem policy de
 delete restrita ao professor).
+
+O tipo livre (`sql/0006`) foi testado pela UI real e pelas RPCs: criação
+com 2 assinaturas nomeando o próprio professor num slot e uma cédula de
+outra pessoa no outro; **primeira assinatura de facto bem-sucedida do
+projeto** (o professor não tem `empresa_id`, então nunca conseguia passar
+no vínculo `empresa_parametro` dos três tipos fixos — no tipo livre, um
+slot de pessoa exata não exige empresa nenhuma). Confirmado também o que
+importa em segurança: o professor é **recusado** no slot da outra pessoa
+("só pode ser assinado pela pessoa exata esperada"), e o carimbo com
+nome+cédula continua na posição certa depois de recarregar. As validações
+de criação foram testadas uma a uma (slot sem assinante nomeado, zero
+slots, nomes repetidos, mais de 10) e os três tipos fixos continuam
+exigindo bater exatamente com o catálogo (sem regressão). Dados de teste
+limpos no fim.
 
 ## Advisory de segurança (esperado)
 
