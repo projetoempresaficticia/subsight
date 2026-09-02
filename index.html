@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Subsight</title>
+  <link rel="stylesheet" href="web/estilos.css" />
+</head>
+<body>
+  <header>
+    <strong>Subsight</strong>
+    <nav id="nav-logado" hidden>
+      <a href="criar.html">Novo documento</a>
+      <button type="button" class="secundario" id="btn-sair" style="margin:0">Sair</button>
+    </nav>
+  </header>
+
+  <main>
+    <div id="area-login" class="painel" style="max-width:360px">
+      <h2>Entrar</h2>
+      <form id="form-login">
+        <label for="email">Email de login</label>
+        <input id="email" type="email" required />
+        <label for="senha">Senha</label>
+        <input id="senha" type="password" required />
+        <button type="submit" class="destaque">Entrar</button>
+        <p class="msg" id="msg-login"></p>
+      </form>
+    </div>
+
+    <div id="area-dashboard" hidden>
+      <div class="topo-pagina">
+        <h1>Meus documentos</h1>
+        <a href="criar.html" class="botao destaque">
+          <img class="icone" src="web/icons/upload-01.svg" alt="" />
+          Novo documento
+        </a>
+      </div>
+
+      <div class="painel">
+        <table>
+          <thead>
+            <tr><th>Tipo</th><th>Estado</th><th>Criado em</th><th></th></tr>
+          </thead>
+          <tbody id="corpo-documentos">
+            <tr><td colspan="4" class="vazio">A carregar…</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="https://projetoempresaficticia.github.io/pp-base/web/comum.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

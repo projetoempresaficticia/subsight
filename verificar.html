@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Subsight — Verificação</title>
+  <link rel="stylesheet" href="web/estilos.css" />
+</head>
+<body>
+  <header>
+    <strong>Subsight</strong>
+    <nav>
+      <a href="index.html">Meus documentos</a>
+    </nav>
+  </header>
+
+  <main>
+    <div id="carregando" class="vazio">Verificando…</div>
+
+    <div id="resultado" class="selo" hidden>
+      <div class="selo-icone"><img class="icone" id="v-icone-img" src="web/icons/shield-check.svg" alt="" /></div>
+      <div class="selo-titulo" id="v-titulo">—</div>
+      <div class="selo-subtitulo" id="v-subtitulo">—</div>
+      <div class="selo-grade">
+        <div class="selo-campo"><div class="rotulo">Estado</div><div class="valor" id="v-estado">—</div></div>
+        <div class="selo-campo"><div class="rotulo">Assinaturas</div><div class="valor" id="v-assinaturas">—</div></div>
+        <div class="selo-campo"><div class="rotulo">Íntegro</div><div class="valor" id="v-integro">—</div></div>
+        <div class="selo-campo"><div class="rotulo">Válido</div><div class="valor" id="v-valido">—</div></div>
+      </div>
+    </div>
+
+    <div id="nao-encontrado" class="selo selo-erro" hidden>
+      <div class="selo-icone"><img class="icone" src="web/icons/lock-01.svg" alt="" /></div>
+      <div class="selo-titulo">Documento não encontrado</div>
+      <div class="selo-subtitulo">Não existe documento com este código no Subsight.</div>
+    </div>
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="https://projetoempresaficticia.github.io/pp-base/web/comum.js"></script>
+  <script src="verificar.js"></script>
+</body>
+</html>

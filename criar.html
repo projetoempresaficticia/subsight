@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Subsight — Novo documento</title>
+  <link rel="stylesheet" href="web/estilos.css" />
+</head>
+<body>
+  <header>
+    <strong>Subsight</strong>
+    <nav>
+      <a href="index.html">← Meus documentos</a>
+    </nav>
+  </header>
+
+  <main>
+    <div id="area-login" class="painel" style="max-width:360px">
+      <h2>Entrar</h2>
+      <form id="form-login">
+        <label for="email">Email de login</label>
+        <input id="email" type="email" required />
+        <label for="senha">Senha</label>
+        <input id="senha" type="password" required />
+        <button type="submit" class="destaque">Entrar</button>
+        <p class="msg" id="msg-login"></p>
+      </form>
+    </div>
+
+    <div id="area-criar" hidden>
+      <h1>Novo documento</h1>
+
+      <form id="form-criar" class="painel">
+        <label for="tipo">Tipo de documento</label>
+        <select id="tipo" required></select>
+
+        <label for="conteudo">Conteúdo</label>
+        <textarea id="conteudo" required placeholder="Texto do contrato/declaração…"></textarea>
+
+        <div id="slots-dinamicos"></div>
+
+        <button type="submit" class="destaque">
+          <img class="icone" src="web/icons/upload-01.svg" alt="" />
+          Criar documento
+        </button>
+        <p class="msg" id="msg-criar"></p>
+      </form>
+    </div>
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="https://projetoempresaficticia.github.io/pp-base/web/comum.js"></script>
+  <script src="criar.js"></script>
+</body>
+</html>

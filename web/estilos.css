@@ -1,0 +1,198 @@
+/* Subsight (pp-assinatura) — paleta fixada pelo Germano.
+   bg #FFFFFF · texto #000000 · secundário #A9A9A9 · destaque #EEC1A0. */
+
+:root {
+  --ss-bg: #FFFFFF;
+  --ss-texto: #000000;
+  --ss-secundario: #A9A9A9;
+  --ss-destaque: #EEC1A0;
+  --ss-destaque-escuro: #D9A063;
+  --ss-borda: #E5E5E5;
+  --ss-fundo-suave: #FAFAFA;
+}
+
+* { box-sizing: border-box; }
+[hidden] { display: none !important; }
+
+body {
+  margin: 0;
+  font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+  background: var(--ss-bg);
+  color: var(--ss-texto);
+}
+
+header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 1.5rem;
+  border-bottom: 1px solid var(--ss-borda);
+}
+header strong { font-size: 1.05rem; letter-spacing: -0.01em; }
+header nav { display: flex; gap: 1.25rem; align-items: center; }
+header a { color: var(--ss-texto); text-decoration: none; font-size: 0.9rem; }
+header a:hover { color: var(--ss-destaque-escuro); }
+
+main {
+  max-width: 880px;
+  margin: 2rem auto;
+  padding: 0 1.25rem 3rem;
+}
+
+.icone { width: 18px; height: 18px; display: inline-block; vertical-align: -3px; }
+.icone-grande { width: 40px; height: 40px; }
+
+h1 { font-size: 1.4rem; margin: 0 0 1.25rem; }
+h2 { font-size: 1.05rem; margin: 0 0 0.75rem; }
+
+.painel {
+  background: #fff;
+  border: 1px solid var(--ss-borda);
+  border-radius: 10px;
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.topo-pagina {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.25rem;
+}
+
+label { display: block; font-size: 0.85rem; margin: 0.7rem 0 0.25rem; color: #333; }
+input, select, textarea {
+  width: 100%;
+  padding: 0.55rem 0.7rem;
+  border: 1px solid var(--ss-borda);
+  border-radius: 6px;
+  font-size: 0.92rem;
+  font-family: inherit;
+  background: #fff;
+  color: var(--ss-texto);
+}
+input:focus, select:focus, textarea:focus {
+  outline: none;
+  border-color: var(--ss-destaque-escuro);
+  box-shadow: 0 0 0 3px rgba(238, 193, 160, 0.35);
+}
+textarea { min-height: 140px; resize: vertical; }
+
+button, .botao {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  margin-top: 1rem;
+  background: var(--ss-texto);
+  color: #fff;
+  border: none;
+  padding: 0.6rem 1.15rem;
+  border-radius: 7px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  font-weight: 500;
+  text-decoration: none;
+}
+button:hover, .botao:hover { background: #262626; }
+button:disabled { background: var(--ss-secundario); cursor: not-allowed; }
+
+button.destaque, .botao.destaque { background: var(--ss-destaque-escuro); color: #fff; }
+button.destaque:hover, .botao.destaque:hover { background: #c48c4f; }
+
+button.secundario, .botao.secundario {
+  background: #fff;
+  color: var(--ss-texto);
+  border: 1px solid var(--ss-borda);
+}
+button.secundario:hover { background: var(--ss-fundo-suave); }
+
+button.perigo { background: #fff; color: #9c1c1c; border: 1px solid #f0c9c9; }
+button.perigo:hover { background: #fdf2f2; }
+
+.msg { margin-top: 0.75rem; font-size: 0.88rem; }
+.msg.erro { color: #9c1c1c; }
+.msg.sucesso { color: #1c7a3a; }
+
+table { width: 100%; border-collapse: collapse; }
+th, td { text-align: left; padding: 0.65rem 0.5rem; border-bottom: 1px solid var(--ss-borda); font-size: 0.9rem; }
+th { color: var(--ss-secundario); font-weight: 600; text-transform: uppercase; font-size: 0.72rem; letter-spacing: 0.03em; }
+tr:hover td { background: var(--ss-fundo-suave); }
+td a { color: var(--ss-texto); font-weight: 500; text-decoration: none; }
+td a:hover { color: var(--ss-destaque-escuro); }
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  padding: 0.2rem 0.65rem;
+  border-radius: 999px;
+  font-size: 0.72rem;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+.badge-pendente { background: #FFF4E8; color: #B4671E; }
+.badge-completo { background: #E9F7EF; color: #1C7A3A; }
+.badge-anulado { background: #F5F5F5; color: #6B7280; }
+
+.slot-linha {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.9rem 0;
+  border-bottom: 1px solid var(--ss-borda);
+  gap: 1rem;
+}
+.slot-linha:last-child { border-bottom: none; }
+.slot-nome { font-weight: 600; font-size: 0.92rem; }
+.slot-requisito { font-size: 0.78rem; color: var(--ss-secundario); margin-top: 0.15rem; }
+.slot-assinado { font-size: 0.82rem; color: #1c7a3a; }
+.slot-codigo {
+  font-family: "SFMono-Regular", Consolas, monospace;
+  font-size: 0.78rem;
+  color: var(--ss-destaque-escuro);
+}
+
+.hash-inline {
+  font-family: "SFMono-Regular", Consolas, monospace;
+  font-size: 0.75rem;
+  color: var(--ss-secundario);
+  word-break: break-all;
+}
+
+.campo-slot-dinamico {
+  border: 1px dashed var(--ss-borda);
+  border-radius: 8px;
+  padding: 0.9rem 1rem;
+  margin-top: 0.75rem;
+}
+
+.vazio { color: var(--ss-secundario); font-size: 0.9rem; padding: 1.5rem 0; text-align: center; }
+
+/* ---- Selo de verificação pública ---- */
+.selo {
+  text-align: center;
+  border-radius: 12px;
+  padding: 2.5rem 1.5rem;
+  border-top: 5px solid var(--ss-texto);
+  background: var(--ss-fundo-suave);
+}
+.selo-ok { border-top-color: #1c7a3a; }
+.selo-aviso { border-top-color: #B4671E; }
+.selo-erro { border-top-color: #9c1c1c; }
+.selo-icone {
+  width: 56px; height: 56px; margin: 0 auto 0.9rem;
+  border-radius: 50%; display: flex; align-items: center; justify-content: center;
+  background: var(--ss-texto); color: #fff;
+}
+.selo-ok .selo-icone { background: #1c7a3a; }
+.selo-aviso .selo-icone { background: #B4671E; }
+.selo-erro .selo-icone { background: #9c1c1c; }
+.selo-icone .icone { width: 26px; height: 26px; filter: brightness(0) invert(1); }
+.selo-titulo { font-size: 1.2rem; font-weight: 700; }
+.selo-subtitulo { font-size: 0.88rem; color: var(--ss-secundario); margin-top: 0.3rem; }
+.selo-grade {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;
+  margin-top: 1.5rem; text-align: left;
+}
+.selo-campo .rotulo { font-size: 0.68rem; text-transform: uppercase; color: var(--ss-secundario); }
+.selo-campo .valor { font-size: 0.95rem; margin-top: 0.15rem; }

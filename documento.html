@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Subsight — Documento</title>
+  <link rel="stylesheet" href="web/estilos.css" />
+</head>
+<body>
+  <header>
+    <strong>Subsight</strong>
+    <nav>
+      <a href="index.html">← Meus documentos</a>
+    </nav>
+  </header>
+
+  <main>
+    <div id="area-login" class="painel" style="max-width:360px">
+      <h2>Entrar</h2>
+      <form id="form-login">
+        <label for="email">Email de login</label>
+        <input id="email" type="email" required />
+        <label for="senha">Senha</label>
+        <input id="senha" type="password" required />
+        <button type="submit" class="destaque">Entrar</button>
+        <p class="msg" id="msg-login"></p>
+      </form>
+    </div>
+
+    <div id="area-documento" hidden>
+      <div class="topo-pagina">
+        <div>
+          <h1 id="d-titulo">—</h1>
+          <div id="d-estado"></div>
+        </div>
+        <a id="d-link-verificar" class="botao secundario" target="_blank" rel="noopener">
+          <img class="icone" src="web/icons/shield-check.svg" alt="" />
+          Verificação pública
+        </a>
+      </div>
+
+      <div class="painel">
+        <h2>Conteúdo</h2>
+        <p id="d-conteudo" style="white-space:pre-wrap"></p>
+        <p class="hash-inline">hash: <span id="d-hash"></span></p>
+      </div>
+
+      <div class="painel">
+        <h2>Slots de assinatura</h2>
+        <div id="d-slots"></div>
+      </div>
+
+      <p class="msg" id="msg-acao"></p>
+      <button type="button" class="perigo" id="btn-anular" hidden>Anular documento</button>
+    </div>
+
+    <p id="area-nao-encontrado" class="painel vazio" hidden>Documento não encontrado, ou você não tem acesso a ele.</p>
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="https://projetoempresaficticia.github.io/pp-base/web/comum.js"></script>
+  <script src="documento.js"></script>
+</body>
+</html>
