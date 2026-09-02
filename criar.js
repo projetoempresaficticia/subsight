@@ -147,7 +147,26 @@ document.getElementById('form-criar').addEventListener('submit', async (ev) => {
     return;
   }
 
-  window.location.href = `documento.html?id=${documentoId}`;
+  mostrarConclusao(documentoId, slotsJson);
 });
+
+function mostrarConclusao(documentoId, slotsJson) {
+  document.getElementById('form-criar').hidden = true;
+
+  const listaEsperados = slotsJson
+    .map((s) => `<li><strong>${s.slot}</strong> — esperado: ${s.pessoa_esperada || s.empresa_esperada}</li>`)
+    .join('');
+
+  const painel = document.createElement('div');
+  painel.className = 'painel selo selo-ok';
+  painel.innerHTML = `
+    <div class="selo-icone"><img class="icone" src="web/icons/check-01.svg" alt="" /></div>
+    <div class="selo-titulo">Documento criado e enviado</div>
+    <div class="selo-subtitulo">O PDF foi enviado com sucesso. Falta assinatura de:</div>
+    <ul style="text-align:left; max-width:320px; margin:1rem auto 0; font-size:0.9rem">${listaEsperados}</ul>
+    <a href="documento.html?id=${documentoId}" class="botao destaque" style="margin-top:1.5rem">Ver documento →</a>
+  `;
+  document.getElementById('area-criar').appendChild(painel);
+}
 
 verificarSessao();

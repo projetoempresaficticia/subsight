@@ -17,11 +17,16 @@ Site: https://projetoempresaficticia.github.io/subsight/
 
 - Nome do produto: **Subsight**
 - Fundo `#FFFFFF` · Texto `#000000` · Secundário `#A9A9A9` · Destaque `#EEC1A0`
-- Ícones: kit único do Figma "Icone" (estilo Untitled UI, outline 24px) — 9
+- Ícones: kit único do Figma "Icone" (estilo Untitled UI, outline 24px) — 10
   ícones já baixados e otimizados em `web/icons/` (pen-tool, file-check,
-  lock, shield-check, check, upload, mail, clock, user-profile); mais
-  entram conforme a cota do Figma permitir — ver
+  lock, shield-check, check, upload, download, mail, clock, user-profile);
+  mais entram conforme a cota do Figma permitir — ver
   `.claude/skills/figma-icons/cache/`
+- Identidade visual **Bauhaus** (pedido do Germano): logotipo geométrico
+  (círculo + quadrado + triângulo sobrepostos) no cabeçalho de cada página,
+  e uma composição decorativa fixa (círculo, quadrado, triângulo, linha
+  diagonal) no canto da tela — tudo dentro da paleta já fixada, sem cores
+  novas.
 - UI kit: avaliação em andamento (cota do plano Figma Starter é mensal, só
   20 chamadas) — Krinet visto parcialmente (botões, ótima cobertura de
   estados) como referência provisória; ver
@@ -66,13 +71,26 @@ Site: https://projetoempresaficticia.github.io/subsight/
   garantido pela imutabilidade do Storage em vez de recálculo ativo.
   Delete no bucket é restrito ao professor (manutenção/testes) — sem isso,
   nem o próprio dono conseguiria limpar um envio de teste.
+- `sql/0005_posicao_assinatura.sql` — `documento_slots` ganha
+  `pagina_assinatura`/`pos_x`/`pos_y` (frações 0–1 da página, não pixels —
+  independe do zoom/tamanho de ecrã usado ao assinar); `ass_assinar` aceita
+  esses três parâmetros opcionais e grava onde o assinante posicionou a
+  assinatura.
 - `index.html`/`app.js` — login + lista "Meus documentos".
 - `criar.html`/`criar.js` — escolher tipo, enviar o PDF, preencher os
   campos de slot dinâmicos (muda conforme o tipo: pede cédula de pessoa ou
-  de empresa).
-- `documento.html`/`documento.js` — link para o PDF (URL assinada do
-  Storage, o bucket é privado), hash, slots (quem assinou, código), assinar
-  um slot vago, anular.
+  de empresa); ao terminar, mostra um **painel de conclusão** explícito
+  ("Documento criado e enviado", lista de quem falta assinar, botão "Ver
+  documento →") em vez de redirecionar direto sem explicação.
+- `documento.html`/`documento.js` — **preview do PDF** renderizado num
+  `<canvas>` via [PDF.js](https://mozilla.github.io/pdf.js/) (não um
+  `<iframe>` — precisa ser canvas para capturar clique e converter em
+  posição na página); clicar no preview enquanto um slot está "assinando"
+  marca onde fica a assinatura, um botão "Confirmar assinatura nesta
+  posição" chama `ass_assinar` com essa posição, e o carimbo fica visível
+  ali (com o nome do slot) depois de assinado, inclusive após recarregar a
+  página. Botão de baixar com ícone (`download-01.svg`) em vez do nome cru
+  do ficheiro.
 - `verificar.html`/`verificar.js` — verificação pública (sem login) por
   `ass_verificar`, que já era pública por design.
 
@@ -105,6 +123,16 @@ que uma tentativa de **sobrescrever** o PDF já enviado é rejeitada por RLS
 (imutabilidade real, não só documentada). Dados de teste limpos no fim
 (incluindo os logins de Auth e o ficheiro no Storage); o catálogo semeado
 ficou.
+
+Depois, o preview de PDF + posicionamento (`sql/0005`) foi testado à parte
+com um PDF gerado programaticamente (o PDF mínimo sintético usado antes não
+tinha um content stream válido — o PDF.js recusava; um PDF com stream real
+foi necessário para o teste). O teste pegou um bug real antes de publicar:
+`renderizarPdf` calculava a variável `escala` mas passava `scale` (nome
+errado) para `getViewport`, um `ReferenceError` silencioso que deixava o
+preview simplesmente escondido. Corrigido, testado clicando de fato no
+canvas, confirmando a posição capturada, assinando, e confirmando que o
+carimbo aparece na posição certa mesmo depois de recarregar a página.
 
 ## Advisory de segurança (esperado)
 

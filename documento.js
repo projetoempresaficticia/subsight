@@ -1,12 +1,24 @@
-// Subsight — ver documento, assinar slots, anular.
+// Subsight — ver documento (com preview do PDF), escolher onde fica a
+// assinatura, assinar slots, anular.
+
+pdfjsLib.GlobalWorkerOptions.workerSrc =
+  'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
 
 const areaLogin = document.getElementById('area-login');
 const areaDocumento = document.getElementById('area-documento');
 const areaNaoEncontrado = document.getElementById('area-nao-encontrado');
 const formLogin = document.getElementById('form-login');
 const msgLogin = document.getElementById('msg-login');
+const visualizador = document.getElementById('visualizador-pdf');
+const canvas = document.getElementById('d-canvas');
+const marcadoresEl = document.getElementById('d-marcadores');
+const dicaPosicionar = document.getElementById('dica-posicionar');
+const btnConfirmarPosicao = document.getElementById('btn-confirmar-posicao');
 
 const documentoId = new URLSearchParams(window.location.search).get('id');
+
+let slotEscolhendo = null; // slot que está aguardando clique de posição
+let posicaoEscolhida = null; // {x, y} em frações 0–1
 
 function badgeEstado(estado) {
   const rotulos = { pendente: 'Pendente', completo: 'Completo', anulado: 'Anulado' };
@@ -19,15 +31,84 @@ function mostrarMsg(texto, ok) {
   el.className = 'msg ' + (ok ? 'sucesso' : 'erro');
 }
 
-async function assinarSlot(slot) {
-  const r = await api('ass_assinar', { p_documento_id: documentoId, p_slot: slot });
+function desenharMarcadores(slotsAssinados) {
+  marcadoresEl.innerHTML = slotsAssinados
+    .filter((s) => s.pos_x != null && s.pos_y != null)
+    .map(
+      (s) => `
+      <div class="marcador-assinatura" style="left:${s.pos_x * 100}%; top:${s.pos_y * 100}%">
+        <div class="ponto"></div>
+        <div class="etiqueta">${s.slot}</div>
+      </div>`
+    )
+    .join('');
+}
+
+async function renderizarPdf(urlAssinada) {
+  const pdf = await pdfjsLib.getDocument(urlAssinada).promise;
+  const pagina = await pdf.getPage(1);
+  const escala = 480 / pagina.getViewport({ scale: 1 }).width;
+  const viewport = pagina.getViewport({ scale: escala });
+  canvas.width = viewport.width;
+  canvas.height = viewport.height;
+  await pagina.render({ canvasContext: canvas.getContext('2d'), viewport }).promise;
+}
+
+visualizador.addEventListener('click', (ev) => {
+  if (!slotEscolhendo) return;
+  const retangulo = canvas.getBoundingClientRect();
+  const x = (ev.clientX - retangulo.left) / retangulo.width;
+  const y = (ev.clientY - retangulo.top) / retangulo.height;
+  posicaoEscolhida = { x, y };
+
+  const antigo = marcadoresEl.querySelector('.marcador-provisorio');
+  if (antigo) antigo.remove();
+  const marcador = document.createElement('div');
+  marcador.className = 'marcador-assinatura marcador-provisorio';
+  marcador.style.left = x * 100 + '%';
+  marcador.style.top = y * 100 + '%';
+  marcador.innerHTML = `<div class="ponto"></div><div class="etiqueta">${slotEscolhendo}</div>`;
+  marcadoresEl.appendChild(marcador);
+
+  btnConfirmarPosicao.hidden = false;
+});
+
+function iniciarEscolhaDePosicao(slot) {
+  slotEscolhendo = slot;
+  posicaoEscolhida = null;
+  visualizador.classList.add('escolhendo');
+  dicaPosicionar.hidden = false;
+  btnConfirmarPosicao.hidden = true;
+}
+
+function cancelarEscolhaDePosicao() {
+  slotEscolhendo = null;
+  posicaoEscolhida = null;
+  visualizador.classList.remove('escolhendo');
+  dicaPosicionar.hidden = true;
+  btnConfirmarPosicao.hidden = true;
+  const provisorio = marcadoresEl.querySelector('.marcador-provisorio');
+  if (provisorio) provisorio.remove();
+}
+
+btnConfirmarPosicao.addEventListener('click', async () => {
+  if (!slotEscolhendo || !posicaoEscolhida) return;
+  const slot = slotEscolhendo;
+  const r = await api('ass_assinar', {
+    p_documento_id: documentoId,
+    p_slot: slot,
+    p_pagina: 1,
+    p_pos_x: posicaoEscolhida.x,
+    p_pos_y: posicaoEscolhida.y,
+  });
+  cancelarEscolhaDePosicao();
   if (r.ok) {
     mostrarMsg(`Assinado! Código ${r.dados.codigo}.`, true);
     carregarDocumento();
   } else {
     mostrarMsg('Erro ao assinar: ' + r.erro, false);
   }
-}
+});
 
 async function anular() {
   if (!confirm('Anular este documento? Esta ação não pode ser desfeita.')) return;
@@ -67,7 +148,7 @@ async function carregarDocumento() {
 
   const { data: slots } = await sb
     .from('documento_slots')
-    .select('slot, empresa_esperada, pessoa_esperada, preenchido_por, codigo, assinado_em')
+    .select('slot, empresa_esperada, pessoa_esperada, preenchido_por, codigo, assinado_em, pos_x, pos_y')
     .eq('documento_id', documentoId)
     .order('slot');
 
@@ -78,12 +159,21 @@ async function carregarDocumento() {
 
   const linkPdf = document.getElementById('d-link-pdf');
   if (doc.arquivo_url) {
-    document.getElementById('d-nome-arquivo').textContent = doc.nome_arquivo || 'Ver PDF';
     const { data: assinada } = await sb.storage.from('documentos').createSignedUrl(doc.arquivo_url, 300);
-    linkPdf.href = assinada ? assinada.signedUrl : '#';
-    linkPdf.hidden = false;
+    if (assinada) {
+      linkPdf.href = assinada.signedUrl;
+      linkPdf.hidden = false;
+      try {
+        await renderizarPdf(assinada.signedUrl);
+        visualizador.hidden = false;
+      } catch (e) {
+        visualizador.hidden = true;
+      }
+      desenharMarcadores(slots || []);
+    }
   } else {
     linkPdf.hidden = true;
+    visualizador.hidden = true;
   }
 
   const listaSlots = document.getElementById('d-slots');
@@ -109,7 +199,7 @@ async function carregarDocumento() {
             <div class="slot-nome">${s.slot}</div>
             <div class="slot-requisito">esperado: ${esperado}</div>
           </div>
-          <button type="button" class="destaque" style="margin:0" data-assinar="${s.slot}">
+          <button type="button" class="destaque" style="margin:0" data-escolher="${s.slot}">
             <img class="icone" src="web/icons/pen-tool-01.svg" alt="" />
             Assinar
           </button>
@@ -117,8 +207,14 @@ async function carregarDocumento() {
     })
     .join('') || '<p class="vazio">Sem slots.</p>';
 
-  listaSlots.querySelectorAll('[data-assinar]').forEach((btn) => {
-    btn.addEventListener('click', () => assinarSlot(btn.dataset.assinar));
+  listaSlots.querySelectorAll('[data-escolher]').forEach((btn) => {
+    btn.addEventListener('click', () => {
+      if (!doc.arquivo_url) {
+        mostrarMsg('Este documento ainda não tem ficheiro anexado.', false);
+        return;
+      }
+      iniciarEscolhaDePosicao(btn.dataset.escolher);
+    });
   });
 
   const btnAnular = document.getElementById('btn-anular');

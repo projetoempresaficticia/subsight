@@ -19,6 +19,49 @@ body {
   font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
   background: var(--ss-bg);
   color: var(--ss-texto);
+  position: relative;
+}
+
+/* ---- Identidade Bauhaus: formas geométricas planas, grid assimétrico ---- */
+
+.marca-bauhaus { flex-shrink: 0; }
+.cabecalho-marca { display: flex; align-items: center; gap: 0.6rem; }
+.cabecalho-marca strong { font-size: 1.1rem; letter-spacing: -0.01em; }
+
+/* Composição decorativa fixa no canto — sutil, não disputa com o conteúdo */
+.formas-bauhaus {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  overflow: hidden;
+  pointer-events: none;
+}
+.formas-bauhaus span { position: absolute; display: block; }
+.fb-circulo {
+  width: 260px; height: 260px; border-radius: 50%;
+  background: var(--ss-destaque);
+  top: -90px; right: -90px;
+}
+.fb-quadrado {
+  width: 140px; height: 140px;
+  background: var(--ss-texto);
+  bottom: -40px; right: 180px;
+  transform: rotate(12deg);
+}
+.fb-triangulo {
+  width: 0; height: 0;
+  border-left: 90px solid transparent;
+  border-right: 90px solid transparent;
+  border-bottom: 150px solid var(--ss-fundo-suave);
+  border-bottom-color: #F3F3F3;
+  bottom: -20px; left: -30px;
+}
+.fb-linha {
+  width: 420px; height: 3px;
+  background: var(--ss-destaque-escuro);
+  top: 140px; right: -80px;
+  transform: rotate(-18deg);
+  opacity: 0.5;
 }
 
 header {
@@ -26,7 +69,9 @@ header {
   justify-content: space-between;
   align-items: center;
   padding: 1rem 1.5rem;
-  border-bottom: 1px solid var(--ss-borda);
+  border-bottom: 2px solid var(--ss-texto);
+  position: relative;
+  z-index: 1;
 }
 header strong { font-size: 1.05rem; letter-spacing: -0.01em; }
 header nav { display: flex; gap: 1.25rem; align-items: center; }
@@ -158,6 +203,44 @@ td a:hover { color: var(--ss-destaque-escuro); }
   color: var(--ss-secundario);
   word-break: break-all;
 }
+
+.visualizador-pdf {
+  position: relative;
+  border: 1px solid var(--ss-borda);
+  border-radius: 8px;
+  overflow: hidden;
+  background: var(--ss-fundo-suave);
+  max-width: 480px;
+  margin: 0 auto;
+}
+.visualizador-pdf canvas { display: block; width: 100%; height: auto; }
+.visualizador-pdf.escolhendo { cursor: crosshair; outline: 2px dashed var(--ss-destaque-escuro); outline-offset: 2px; }
+
+#d-marcadores { position: absolute; inset: 0; pointer-events: none; }
+.marcador-assinatura {
+  position: absolute;
+  transform: translate(-50%, -100%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  pointer-events: none;
+}
+.marcador-assinatura .ponto {
+  width: 14px; height: 14px; border-radius: 50%;
+  background: var(--ss-destaque-escuro);
+  border: 2px solid #fff;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.3);
+}
+.marcador-assinatura .etiqueta {
+  margin-top: 2px;
+  background: #000;
+  color: #fff;
+  font-size: 0.6rem;
+  padding: 0.1rem 0.4rem;
+  border-radius: 4px;
+  white-space: nowrap;
+}
+.marcador-provisorio .ponto { background: var(--ss-texto); }
 
 .campo-slot-dinamico {
   border: 1px dashed var(--ss-borda);

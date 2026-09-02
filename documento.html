@@ -7,8 +7,22 @@
   <link rel="stylesheet" href="web/estilos.css" />
 </head>
 <body>
+  <div class="formas-bauhaus" aria-hidden="true">
+    <span class="fb-triangulo"></span>
+    <span class="fb-quadrado"></span>
+    <span class="fb-circulo"></span>
+    <span class="fb-linha"></span>
+  </div>
+
   <header>
-    <strong>Subsight</strong>
+    <div class="cabecalho-marca">
+      <svg class="marca-bauhaus" viewBox="0 0 40 40" width="28" height="28" aria-hidden="true">
+        <circle cx="13" cy="13" r="10" fill="var(--ss-destaque)" />
+        <rect x="19" y="19" width="16" height="16" fill="#000" />
+        <polygon points="31,3 39,19 23,19" fill="none" stroke="#000" stroke-width="2" />
+      </svg>
+      <strong>Subsight</strong>
+    </div>
     <nav>
       <a href="index.html">← Meus documentos</a>
     </nav>
@@ -40,17 +54,28 @@
       </div>
 
       <div class="painel">
-        <h2>Documento</h2>
-        <a id="d-link-pdf" class="botao secundario" target="_blank" rel="noopener">
-          <img class="icone" src="web/icons/file-check-01.svg" alt="" />
-          <span id="d-nome-arquivo">Ver PDF</span>
-        </a>
+        <div class="topo-pagina" style="margin-bottom:0.75rem">
+          <h2 style="margin:0">Documento</h2>
+          <a id="d-link-pdf" class="botao secundario" target="_blank" rel="noopener" style="margin:0">
+            <img class="icone" src="web/icons/download-01.svg" alt="" />
+            Baixar
+          </a>
+        </div>
+        <div id="visualizador-pdf" class="visualizador-pdf">
+          <canvas id="d-canvas"></canvas>
+          <div id="d-marcadores"></div>
+        </div>
+        <p id="dica-posicionar" class="msg" hidden>Toque no documento acima para escolher onde fica a sua assinatura.</p>
         <p class="hash-inline" style="margin-top:0.9rem">hash (SHA-256): <span id="d-hash"></span></p>
       </div>
 
       <div class="painel">
         <h2>Slots de assinatura</h2>
         <div id="d-slots"></div>
+        <button type="button" class="destaque" id="btn-confirmar-posicao" hidden>
+          <img class="icone" src="web/icons/pen-tool-01.svg" alt="" />
+          Confirmar assinatura nesta posição
+        </button>
       </div>
 
       <p class="msg" id="msg-acao"></p>
@@ -61,6 +86,7 @@
   </main>
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
   <script src="https://projetoempresaficticia.github.io/pp-base/web/comum.js"></script>
   <script src="documento.js"></script>
 </body>
