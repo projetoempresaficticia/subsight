@@ -65,17 +65,24 @@ Site: https://projetoempresaficticia.github.io/subsight/
      flutuando ao lado do cartão de login. Na referência "Bauhaus" a arte
      encosta direto nas bordas do cartão-mãe (sem respiro, sem moldura
      própria) — é fundo, não ícone.
-  6. **Versão atual:** removida a moldura preta de vez (`.app-shell`
-     revertido — o resto do app volta a ser branco liso, como antes do
-     item 5). Só a tela de login muda: `.hero-entrar` é um cartão único
-     (sem separação visual entre as duas colunas) e `.hero-entrar-arte`
-     usa a grade como **`background-image` de verdade** (data-URI SVG,
-     `background-size: cover`) preenchendo a coluna inteira, sem
-     `aspect-ratio`, sem padding, sem cantos próprios — encosta direto
-     nas bordas do cartão, exatamente como a referência. Cores do SVG
-     embutidas em hex (`#EEC1A0`, `#D9A063`, `#A9A9A9`, `#000000`,
-     `#FFFFFF`) porque um `background-image` em data-URI não lê
-     `var(--ss-*)` — são os mesmos valores da paleta, só escritos direto.
+  6. Removida a moldura preta de vez, e a grade virou `background-image`
+     — mas ainda dividida em duas colunas (formulário numa metade, grade
+     preenchendo a outra), então continuava lendo como "um quadrado do
+     lado" ("cara ta bem feio porque não está livre"). Instalada a skill
+     `ui-ux-pro-max` (340K installs, `nextlevelbuilder/ui-ux-pro-max-skill`)
+     a pedido do Germano; o padrão `hero-centric-design` da sua base de
+     dados aponta exatamente o problema: hero de alto impacto é **um
+     bloco só** (fundo + texto sobrepostos), não um layout de duas colunas
+     separadas.
+  7. **Versão atual:** `.hero-entrar` vira uma seção única, sem grid de
+     colunas — a grade Bauhaus é o `background-image` do cartão inteiro
+     (`background-size: cover`, preenche 100% da largura e altura), e o
+     conteúdo (selo + título + formulário de entrar) flutua por cima num
+     painel translúcido (`rgba(255,255,255,.94)` + `backdrop-filter:
+     blur`) ancorado à esquerda — não mais uma coluna própria com sua
+     própria largura reservada. Isso solta a arte de qualquer contorno:
+     ela ocupa o cartão inteiro, o painel de texto é que flutua por cima,
+     não o contrário.
 - UI kit: avaliação em andamento (cota do plano Figma Starter é mensal, só
   20 chamadas) — Krinet visto parcialmente (botões, ótima cobertura de
   estados) como referência provisória; ver
