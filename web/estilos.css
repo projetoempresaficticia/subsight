@@ -67,6 +67,52 @@ main {
 h1 { font-size: 1.4rem; margin: 0 0 1.25rem; }
 h2 { font-size: 1.05rem; margin: 0 0 0.75rem; }
 
+/* ---- Hero de entrada: a grade Bauhaus em tamanho de verdade, não um
+   ícone — é a única página "de vitrine" do app (as demais são telas de
+   trabalho: lista, documento, formulário), por isso é a única com essa
+   composição grande. ---- */
+.hero-entrar {
+  display: grid;
+  grid-template-columns: minmax(280px, 380px) minmax(220px, 360px);
+  justify-content: space-between;
+  align-items: center;
+  gap: 2.5rem;
+  margin: 1.5rem 0 2.5rem;
+}
+.hero-entrar-eyebrow {
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  color: var(--ss-destaque-escuro);
+  margin: 0 0 0.6rem;
+}
+.hero-entrar-titulo {
+  font-size: clamp(1.7rem, 3vw, 2.3rem);
+  line-height: 1.12;
+  margin: 0 0 0.75rem;
+}
+.hero-entrar-sub {
+  color: var(--ss-secundario);
+  font-size: 0.95rem;
+  max-width: 34ch;
+  margin: 0 0 1.5rem;
+}
+.hero-entrar-form { max-width: 360px; margin: 0; }
+.hero-entrar-arte {
+  background: var(--ss-texto);
+  border-radius: 28px;
+  padding: clamp(0.9rem, 2.5vw, 1.75rem);
+  aspect-ratio: 1;
+  width: 100%;
+}
+.hero-entrar-arte svg { display: block; width: 100%; height: 100%; }
+
+@media (max-width: 760px) {
+  .hero-entrar { grid-template-columns: 1fr; gap: 1.75rem; }
+  .hero-entrar-arte { max-width: 260px; margin: 0 auto; order: -1; }
+}
+
 .painel {
   background: #fff;
   border: 1px solid var(--ss-borda);

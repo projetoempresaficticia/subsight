@@ -38,12 +38,26 @@ Site: https://projetoempresaficticia.github.io/subsight/
      desproporcional" comparado ao estilo de referência (duas imagens de
      app mobile mandadas pelo Germano: cartão preto arredondado com o
      padrão geométrico como arte de fundo/ícone).
-  3. **Versão atual:** um único elemento — a grade 3×3 inteira, recortada
-     num ícone de app quadrado arredondado (`.icone-app`, 48×48px) no
-     cabeçalho, do mesmo tamanho em toda página, sem posição fixa (não
-     sobrepõe nada, não precisa esconder em mobile). Sem marca-d'água
-     separada — o ícone É a marca, do jeito que o app de referência usa o
-     mesmo padrão geométrico tanto no ícone quanto em cartões maiores.
+  3. O ícone de app quadrado arredondado (`.icone-app`, 48×48px) no
+     cabeçalho, mesmo tamanho em toda página, sem posição fixa — resolveu a
+     sobreposição, mas deixou o resto da página "completamente branca"
+     (queixa do Germano); a grade só aparecia em miniatura, nunca com
+     presença de verdade.
+  4. **Versão atual:** a página de login (`index.html`, único momento de
+     "vitrine" do app — as outras são telas de trabalho: lista, documento,
+     formulário) ganhou um **hero de verdade**: grade 3×3 grande dentro de
+     um cartão preto arredondado (`.hero-entrar-arte`, `aspect-ratio:1`, até
+     360px) ao lado do formulário de entrar, com título/subtítulo — adaptado
+     de 6 imagens de referência que o Germano mandou (páginas tipo Todoist,
+     "SOLID", "Branding X" e uma landing chamada literalmente "Bauhaus":
+     todas usam a mesma ideia — bloco geométrico grande e ousado na
+     vitrine/hero, ícones pequenos e discretos nas telas de trabalho). As
+     telas de trabalho continuam só com o `.icone-app` do cabeçalho — bloco
+     grande ali brigaria com tabela/formulário/preview de PDF, o que também
+     bate com o padrão das próprias referências (a versão mobile mandada
+     antes também usa arte grande só na tela de onboarding, não nos
+     dashboards). Responsivo: empilha e encolhe (até 260px) em telas
+     estreitas, nunca esconde.
 - UI kit: avaliação em andamento (cota do plano Figma Starter é mensal, só
   20 chamadas) — Krinet visto parcialmente (botões, ótima cobertura de
   estados) como referência provisória; ver
