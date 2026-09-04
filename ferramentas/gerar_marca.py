@@ -68,9 +68,23 @@ def main():
     print('marca recortada pelo laranja:', caixa,
           '->', caixa[2] - caixa[0], 'x', caixa[3] - caixa[1])
 
+    # A marca aparece no cabeçalho a 63x38. Guardar os 891px do recorte
+    # eram 240 KB para desenhar 63 — reduz-se a 400px de largura, que
+    # ainda chega para ecrãs de densidade dupla e tripla, e sai em WebP.
     deitada = im.crop(caixa)
-    deitada.save(destino / 'subsight-marca.png', optimize=True)
-    print('escrito web/marca/subsight-marca.png', deitada.size)
+    largura = 400
+    altura = round(deitada.height * largura / deitada.width)
+    deitada = deitada.resize((largura, altura), Image.LANCZOS)
+
+    alvo = destino / 'subsight-marca.webp'
+    deitada.save(alvo, 'WEBP', quality=92, method=6)
+    print(f'escrito web/marca/subsight-marca.webp {deitada.size} '
+          f'{alvo.stat().st_size/1024:.0f} KB')
+
+    reserva = destino / 'subsight-marca.png'
+    deitada.save(reserva, optimize=True)
+    print(f'escrito web/marca/subsight-marca.png  {deitada.size} '
+          f'{reserva.stat().st_size/1024:.0f} KB')
 
     # a versão quadrada centra a mesma marca, sem a esticar
     marca = im.crop(quadrado(caixa))
