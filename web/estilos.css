@@ -1,14 +1,55 @@
-/* Subsight (pp-assinatura) — paleta fixada pelo Germano.
-   bg #FFFFFF · texto #000000 · secundário #A9A9A9 · destaque #EEC1A0. */
+/* ═══════════════════════════════════════════════════════════════════
+   SUBSIGHT (pp-assinatura) — assinatura digital do Prepara Portugal.
+
+   Identidade laranja, adotada em 2026-09-04 a partir do ícone e do fundo
+   que o Germano forneceu. Substitui o pêssego #EEC1A0 / #D9A063 que aqui
+   esteve antes.
+
+   A LEI, e é a mesma família de problema do lima do Prepacoin:
+
+     O laranja da marca #FF7F00 tem 2,53:1 sobre branco. Não chega
+     sequer para texto grande (que pede 3:1). É PREENCHIMENTO, e o que
+     vai por cima dele é a tinta, nunca o branco:
+
+       tinta  sobre laranja ... 7,01:1  ✔
+       branco sobre laranja ... 2,53:1  ✘
+
+     Para texto laranja sobre branco há uma segunda cor, mais escura:
+     #C2410C, com 5,18:1. É essa que vai em links, eyebrows e ênfases.
+
+   O que aqui estava e reprovava, medido antes de trocar:
+     #A9A9A9 secundário .... 2,35:1  (era texto corrido)
+     #D9A063 destaque ...... 2,29:1  (era eyebrow e hover de link)
+     #EEC1A0 ............... 1,64:1
+   Não era uma questão de gosto: o texto secundário da app não se lia.
+
+   Contraste de tudo o que fica, sobre branco:
+     #181818 tinta ......... 17,76:1
+     #C2410C laranja texto .. 5,18:1
+     #6B7280 secundário ..... 4,83:1
+     #39404A carvão ........ 10,47:1
+   ═══════════════════════════════════════════════════════════════════ */
 
 :root {
   --ss-bg: #FFFFFF;
-  --ss-texto: #000000;
-  --ss-secundario: #A9A9A9;
-  --ss-destaque: #EEC1A0;
-  --ss-destaque-escuro: #D9A063;
-  --ss-borda: #E5E5E5;
   --ss-fundo-suave: #FAFAFA;
+  --ss-texto: #181818;
+  --ss-secundario: #6B7280;
+  --ss-borda: #E5E5E5;
+
+  /* a marca: preenchimento, com tinta por cima */
+  --ss-laranja: #FF7F00;
+  --ss-laranja-claro: #FFF1E3;
+  /* a mesma cor, escurecida até dar para texto sobre branco */
+  --ss-destaque-escuro: #C2410C;
+
+  /* vindas do fundo, para o resto do app conversar com ele */
+  --ss-carvao: #39404A;
+  --ss-ambar: #FBA919;
+
+  /* mantido por compatibilidade: havia regras a usar --ss-destaque como
+     preenchimento suave, e passam a apanhar o laranja pálido */
+  --ss-destaque: var(--ss-laranja-claro);
 }
 
 * { box-sizing: border-box; }
@@ -22,24 +63,23 @@ body {
   position: relative;
 }
 
-/* ---- Identidade Bauhaus ----
-   O selo da marca é a própria grade tesselada (meio-círculos, quartos de
-   círculo, triângulo, blocos sólidos que se encaixam sem folga) — não uma
-   marca-d'água solta pela tela. Um único lugar, com presença de verdade:
-   um ícone de app, recortado num quadrado arredondado escuro no
-   cabeçalho, do mesmo tamanho em toda página. */
+/* ---- A marca no cabeçalho ----
+   Um só lugar, do mesmo tamanho em todas as páginas. */
 .cabecalho-marca { display: flex; align-items: center; gap: 0.75rem; }
 .cabecalho-marca strong { font-size: 1.2rem; letter-spacing: -0.01em; }
 
+/* A marca é uma assinatura desenhada com o visto no fim, e vive por si:
+   não leva chip nem moldura. Metê-la dentro de um quadrado arredondado
+   escuro, como estava a grade Bauhaus antiga, cortava-lhe o traço e
+   tirava-lhe o gesto, que é o que a marca conta. */
 .icone-app {
   flex-shrink: 0;
-  width: 48px;
-  height: 48px;
-  border-radius: 14px;
-  overflow: hidden;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+  height: 38px;
+  display: block;
 }
-.icone-app svg { display: block; width: 100%; height: 100%; }
+/* deitada, com a largura a acompanhar: a marca é um gesto horizontal e
+   metê-la num quadrado só lhe roubava altura de traço */
+.icone-app img { display: block; height: 100%; width: auto; }
 
 header {
   display: flex;
@@ -67,14 +107,18 @@ main {
 h1 { font-size: 1.4rem; margin: 0 0 1.25rem; }
 h2 { font-size: 1.05rem; margin: 0 0 0.75rem; }
 
-/* ---- Hero de entrada: a grade Bauhaus como FUNDO de verdade (background-
-   image), não um ícone nem um cartão quadrado ao lado — a arte encosta
-   nas bordas do próprio hero, do jeito que a referência "Bauhaus" usa
-   (o padrão preenche a coluna inteira, sem moldura/respiro próprio). É a
-   única página "de vitrine" do app (as demais são telas de trabalho:
-   lista, documento, formulário), por isso é a única com essa composição
-   grande. Cores do SVG abaixo são as mesmas var(--ss-*) escritas em hex,
-   porque um background-image em data-URI não lê custom properties. ---- */
+/* ---- Hero de entrada ----
+   O fundo é a arte que o Germano forneceu: geometria à direita, campo
+   livre à esquerda. É por isso que o conteúdo vai à ESQUERDA e não ao
+   centro — a imagem foi composta para deixar esse espaço, e centrar o
+   painel punha-o por cima das formas.
+
+   Full-bleed, sem moldura própria: a arte encosta às bordas do hero. Não
+   é o "quadrado ao lado do login" que ficou para trás; é uma imagem só,
+   com o painel a flutuar por cima da parte vazia dela.
+
+   22 KB em WebP, contra 828 KB do PNG original. Numa sala com mil
+   formandos a abrir isto ao mesmo tempo, a diferença conta. */
 .hero-entrar {
   position: relative;
   display: flex;
@@ -83,20 +127,26 @@ h2 { font-size: 1.05rem; margin: 0 0 0.75rem; }
   border-radius: 28px;
   overflow: hidden;
   margin: 1.5rem 0 2.5rem;
-  background-image: url("data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%20240%20240'%3E%3Cdefs%3E%3CclipPath%20id='c10'%3E%3Crect%20x='80'%20y='0'%20width='80'%20height='80'/%3E%3C/clipPath%3E%3CclipPath%20id='c20'%3E%3Crect%20x='160'%20y='0'%20width='80'%20height='80'/%3E%3C/clipPath%3E%3CclipPath%20id='c01'%3E%3Crect%20x='0'%20y='80'%20width='80'%20height='80'/%3E%3C/clipPath%3E%3CclipPath%20id='c11'%3E%3Crect%20x='80'%20y='80'%20width='80'%20height='80'/%3E%3C/clipPath%3E%3CclipPath%20id='c21'%3E%3Crect%20x='160'%20y='80'%20width='80'%20height='80'/%3E%3C/clipPath%3E%3CclipPath%20id='c22'%3E%3Crect%20x='160'%20y='160'%20width='80'%20height='80'/%3E%3C/clipPath%3E%3C/defs%3E%3Crect%20width='240'%20height='240'%20fill='%23000000'/%3E%3Cg%20clip-path='url(%23c10)'%3E%3Ccircle%20cx='80'%20cy='0'%20r='80'%20fill='%23EEC1A0'/%3E%3C/g%3E%3Cg%20clip-path='url(%23c20)'%3E%3Ccircle%20cx='200'%20cy='80'%20r='40'%20fill='%23A9A9A9'/%3E%3C/g%3E%3Cg%20clip-path='url(%23c01)'%3E%3Ccircle%20cx='80'%20cy='120'%20r='40'%20fill='%23A9A9A9'/%3E%3C/g%3E%3Cg%20clip-path='url(%23c11)'%3E%3Ccircle%20cx='160'%20cy='160'%20r='80'%20fill='%23D9A063'/%3E%3C/g%3E%3Cg%20clip-path='url(%23c21)'%3E%3Ccircle%20cx='160'%20cy='160'%20r='80'%20fill='%23EEC1A0'/%3E%3C/g%3E%3Cpolygon%20points='0,240%2080,240%2080,160'%20fill='%23FFFFFF'/%3E%3Crect%20x='80'%20y='160'%20width='80'%20height='80'%20fill='%23FFFFFF'/%3E%3Cg%20clip-path='url(%23c22)'%3E%3Ccircle%20cx='240'%20cy='160'%20r='80'%20fill='%23D9A063'/%3E%3C/g%3E%3C/svg%3E");
+  background-color: var(--ss-bg);
+  background-image: image-set(
+    url("marca/subsight-fundo.webp") type("image/webp"),
+    url("marca/subsight-fundo.jpg") type("image/jpeg"));
+  background-image: -webkit-image-set(
+    url("marca/subsight-fundo.webp") type("image/webp"),
+    url("marca/subsight-fundo.jpg") type("image/jpeg"));
   background-size: cover;
-  background-position: center;
+  background-position: right center;
 }
 .hero-entrar-conteudo {
   position: relative;
   z-index: 1;
   max-width: 400px;
-  margin: clamp(1rem, 4vw, 2.5rem);
+  margin: clamp(1rem, 4vw, 3rem);
   padding: clamp(1.5rem, 3vw, 2rem);
   background: rgba(255, 255, 255, 0.94);
   backdrop-filter: blur(6px);
   border-radius: 20px;
-  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.25);
+  box-shadow: 0 12px 32px rgba(24, 24, 24, 0.14);
 }
 .hero-entrar-eyebrow {
   font-size: 0.75rem;
@@ -152,7 +202,7 @@ input, select, textarea {
 input:focus, select:focus, textarea:focus {
   outline: none;
   border-color: var(--ss-destaque-escuro);
-  box-shadow: 0 0 0 3px rgba(238, 193, 160, 0.35);
+  box-shadow: 0 0 0 3px rgba(255, 127, 0, 0.30);
 }
 textarea { min-height: 140px; resize: vertical; }
 
@@ -174,7 +224,13 @@ button, .botao {
 button:hover, .botao:hover { background: #262626; }
 button:disabled { background: var(--ss-secundario); cursor: not-allowed; }
 
-button.destaque, .botao.destaque { background: var(--ss-destaque-escuro); color: #fff; }
+/* laranja com tinta por cima: branco sobre este laranja dá 2,53:1 e
+   não se lê */
+button.destaque, .botao.destaque {
+  background: var(--ss-laranja);
+  color: var(--ss-texto);
+}
+button.destaque:hover, .botao.destaque:hover { background: #F07300; }
 button.destaque:hover, .botao.destaque:hover { background: #c48c4f; }
 
 button.secundario, .botao.secundario {
@@ -316,3 +372,7 @@ td a:hover { color: var(--ss-destaque-escuro); }
 }
 .selo-campo .rotulo { font-size: 0.68rem; text-transform: uppercase; color: var(--ss-secundario); }
 .selo-campo .valor { font-size: 0.95rem; margin-top: 0.15rem; }
+
+/* texto secundário; existe porque havia um #A9A9A9 cravado no criar.js,
+   e essa cor dava 2,35:1 sobre branco. O token passa a 4,83:1. */
+.suave { color: var(--ss-secundario); }

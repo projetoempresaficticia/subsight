@@ -13,80 +13,75 @@ Documentação completa (PRDs e decisões) em
 
 Site: https://projetoempresaficticia.github.io/subsight/
 
-## Identidade visual (decidida)
+## Identidade visual
+
+**Mudou em 2026-09-04.** O Germano forneceu um ícone e um fundo, e com
+eles veio uma identidade **laranja**. O pêssego `#EEC1A0` / `#D9A063` e a
+grade Bauhaus tesselada que aqui estiveram saíram de cena.
 
 - Nome do produto: **Subsight**
-- Fundo `#FFFFFF` · Texto `#000000` · Secundário `#A9A9A9` · Destaque `#EEC1A0`
-- Ícones: kit único do Figma "Icone" (estilo Untitled UI, outline 24px) — 10
-  ícones já baixados e otimizados em `web/icons/` (pen-tool, file-check,
-  lock, shield-check, check, upload, download, mail, clock, user-profile);
-  mais entram conforme a cota do Figma permitir — ver
-  `.claude/skills/figma-icons/cache/`
-- Identidade visual **Bauhaus** (pedido do Germano): a marca é a própria
-  **grade 3×3 de ladrilhos que se encaixam** (quartos/meios-círculo via
-  `clipPath` + `circle` posicionado no canto/aresta da célula, triângulo,
-  quadrados sólidos) — sem cores novas, só a paleta já fixada. Passou por
-  três versões até acertar:
-  1. Formas soltas flutuando (círculo, quadrado, triângulo, linha) —
-     rejeitada ("esquisito"), não parecia Bauhaus de verdade.
-  2. A grade 3×3 certa, mas como marca-d'água flutuante (`position: fixed`)
-     num canto da tela, com um logotipo separado e pequeno (28px) no
-     cabeçalho — rejeitada por dois motivos: a marca-d'água invadia o
-     cartão de login em telas estreitas (por isso ganhou um
-     `@media (max-width:900px){display:none}` que a escondia por completo
-     no mobile), e o logotipo do cabeçalho ficou "muito pequeno e
-     desproporcional" comparado ao estilo de referência (duas imagens de
-     app mobile mandadas pelo Germano: cartão preto arredondado com o
-     padrão geométrico como arte de fundo/ícone).
-  3. O ícone de app quadrado arredondado (`.icone-app`, 48×48px) no
-     cabeçalho, mesmo tamanho em toda página, sem posição fixa — resolveu a
-     sobreposição, mas deixou o resto da página "completamente branca"
-     (queixa do Germano); a grade só aparecia em miniatura, nunca com
-     presença de verdade.
-  4. A página de login ganhou um hero de verdade (grade grande dentro de
-     um cartão preto ao lado do formulário) — resolveu a vitrine, mas o
-     Germano apontou que ainda sobrava "espaço em branco" ao lado do
-     cartão de login, e que o fundo continuava liso depois de entrar no
-     app (lista de documentos, documento, etc.) — ele mandou 6
-     referências de novo para deixar claro: páginas tipo Todoist, "SOLID",
-     "Branding X" e uma landing chamada literalmente "Bauhaus" — o padrão
-     comum entre elas não é só "tenha um bloco geométrico grande", é
-     **o app inteiro vive dentro de uma moldura colorida** (a referência
-     "Bauhaus" é a mais literal: moldura amarela cheia + cartão branco
-     arredondado por dentro, com o bloco geométrico como um painel dentro
-     desse cartão).
-  5. Tentativa de moldura preta (`.app-shell`) ao redor do app inteiro —
-     rejeitada ("não quero algo dessa maneira"). O Germano reenviou as
-     mesmas 6 referências apontando o que ainda estava errado: **1)** não
-     é uma moldura em volta de tudo, é a própria tela de login que usa a
-     grade como pano de fundo; **2)** "não quero um quadrado do lado" — o
-     `.hero-entrar-arte` da v4 era literalmente isso, um quadrado
-     (`aspect-ratio:1`) com preenchimento interno e cantos próprios,
-     flutuando ao lado do cartão de login. Na referência "Bauhaus" a arte
-     encosta direto nas bordas do cartão-mãe (sem respiro, sem moldura
-     própria) — é fundo, não ícone.
-  6. Removida a moldura preta de vez, e a grade virou `background-image`
-     — mas ainda dividida em duas colunas (formulário numa metade, grade
-     preenchendo a outra), então continuava lendo como "um quadrado do
-     lado" ("cara ta bem feio porque não está livre"). Instalada a skill
-     `ui-ux-pro-max` (340K installs, `nextlevelbuilder/ui-ux-pro-max-skill`)
-     a pedido do Germano; o padrão `hero-centric-design` da sua base de
-     dados aponta exatamente o problema: hero de alto impacto é **um
-     bloco só** (fundo + texto sobrepostos), não um layout de duas colunas
-     separadas.
-  7. **Versão atual:** `.hero-entrar` vira uma seção única, sem grid de
-     colunas — a grade Bauhaus é o `background-image` do cartão inteiro
-     (`background-size: cover`, preenche 100% da largura e altura), e o
-     conteúdo (selo + título + formulário de entrar) flutua por cima num
-     painel translúcido (`rgba(255,255,255,.94)` + `backdrop-filter:
-     blur`) ancorado à esquerda — não mais uma coluna própria com sua
-     própria largura reservada. Isso solta a arte de qualquer contorno:
-     ela ocupa o cartão inteiro, o painel de texto é que flutua por cima,
-     não o contrário.
-- UI kit: avaliação em andamento (cota do plano Figma Starter é mensal, só
-  20 chamadas) — Krinet visto parcialmente (botões, ótima cobertura de
-  estados) como referência provisória; ver
-  `.claude/skills/figma-ui-kits/cache/kits-avaliados.md`
+- Laranja da marca `#FF7F00` · Tinta `#181818` · Secundário `#6B7280` ·
+  Laranja de texto `#C2410C` · Carvão `#39404A` · Âmbar `#FBA919`
+- A marca é a assinatura desenhada com o visto no fim, em
+  `web/marca/subsight-marca.png`. Vive por si, sem chip nem moldura.
+- O fundo da entrada é a arte geométrica, em `web/marca/subsight-fundo.webp`.
+
+### A regra que decide o resto
+
+O laranja da marca tem **2,53:1** sobre branco. Não chega sequer para
+texto grande, que pede 3:1. É **preenchimento**, e o que vai por cima
+dele é a tinta, nunca o branco:
+
+| par | contraste | |
+|---|---|---|
+| tinta `#181818` sobre laranja | **7,01:1** | ✔ é assim que se usa |
+| branco sobre laranja | 2,53:1 | ✘ não se lê |
+| laranja sobre branco | 2,53:1 | ✘ não serve para texto |
+| `#C2410C` sobre branco | **5,18:1** | ✔ o laranja dos links |
+
+É o mesmo problema que o lima do Prepacoin, e a mesma solução: uma cor
+para preencher, outra, mais escura, para escrever.
+
+### O que aqui estava e reprovava
+
+Medido antes de trocar, e não era questão de gosto:
+
+| cor | uso | sobre branco |
+|---|---|---|
+| `#A9A9A9` | texto secundário | **2,35:1** ✘ |
+| `#D9A063` | eyebrow, hover de link | **2,29:1** ✘ |
+| `#EEC1A0` | destaque | 1,64:1 ✘ |
+
+O texto secundário da app **não se lia**. Havia ainda um `#A9A9A9` cravado
+à mão no `criar.js`, agora substituído pelo token. Os novos valores passam
+todos: secundário 4,83:1, laranja de texto 5,18:1, tinta 17,76:1.
+
+### Os ficheiros
+
+`python ferramentas/gerar_marca.py` regenera tudo a partir dos originais.
+
+O recorte da marca é feito **pelo laranja**, não pela transparência: o
+ficheiro traz um arco cinzento fantasma em baixo que ocupa 35% da altura
+e, a 46px, não se vê. Recortar por ele encolhia o traço da assinatura para
+2px e a marca lia-se como uma mancha.
+
+O fundo sai em **WebP: 22 KB, contra 828 KB do PNG original**. Numa sala
+com mil formandos a abrir isto ao mesmo tempo, a diferença conta. Fica um
+JPEG de 62 KB como reserva, escolhido por `image-set`.
+
+O `apple-touch-icon` é composto **sobre branco**, porque o iOS não respeita
+transparência no ícone do ecrã inicial: o que fosse transparente saía
+preto.
+
+### Cache
+
+`python ferramentas/versoes.py` carimba os `?v=` e escreve o `versao.json`
+com o `<meta name="pc-versao">` de cada página. Existe porque o GitHub
+Pages manda `Cache-Control: max-age=600` no HTML e não deixa mudar isso:
+um HTML em cache aponta para os `?v=` velhos e a página fica presa dez
+minutos. O `web/atualizar.js` compara os dois e recarrega quando não
+batem. Copiado do `pp-banco`, onde o problema apareceu primeiro.
+
 
 ## O que este repositório fornece
 

@@ -50,7 +50,7 @@ function renderSlots() {
         .join(' · ');
       return `
         <div class="campo-slot-dinamico" data-slot="${s.slot}" data-tipo-vinculo="${pedeCedulaPessoa ? 'pessoa' : 'empresa'}">
-          <label>Slot "${s.slot}" ${requisito ? `<span style="color:#A9A9A9;font-weight:400">(${requisito})</span>` : ''}</label>
+          <label>Slot "${s.slot}" ${requisito ? `<span class="suave" style="font-weight:400">(${requisito})</span>` : ''}</label>
           <input class="valor-slot" placeholder="${rotulo}" required />
         </div>`;
     })
