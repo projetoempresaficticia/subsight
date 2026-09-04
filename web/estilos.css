@@ -100,6 +100,10 @@ main {
   margin: 2rem auto;
   padding: 0 1.25rem 3rem;
 }
+/* No ecrã de entrada o <main> fica sem nada visível, mas as margens
+   continuavam lá e desenhavam uma faixa branca por baixo da faixa de
+   valores. Sem conteúdo, não ocupa espaço. */
+main:not(:has(> *:not([hidden]))) { margin: 0; padding: 0; }
 
 .icone { width: 18px; height: 18px; display: inline-block; vertical-align: -3px; }
 .icone-grande { width: 40px; height: 40px; }
@@ -107,26 +111,33 @@ main {
 h1 { font-size: 1.4rem; margin: 0 0 1.25rem; }
 h2 { font-size: 1.05rem; margin: 0 0 0.75rem; }
 
-/* ---- Hero de entrada ----
-   O fundo é a arte que o Germano forneceu: geometria à direita, campo
-   livre à esquerda. É por isso que o conteúdo vai à ESQUERDA e não ao
-   centro — a imagem foi composta para deixar esse espaço, e centrar o
-   painel punha-o por cima das formas.
+/* ═══ ENTRADA ═══════════════════════════════════════════════════════
+   Mesmo desenho da entrada do Cartório, porque o Germano pediu que se
+   parecessem: palco full-bleed a ocupar o ecrã, arte encostada à direita,
+   e um VÉU em gradiente que abre um campo limpo à esquerda para o cartão
+   assentar.
 
-   Full-bleed, sem moldura própria: a arte encosta às bordas do hero. Não
-   é o "quadrado ao lado do login" que ficou para trás; é uma imagem só,
-   com o painel a flutuar por cima da parte vazia dela.
+   O véu é a peça que faz isto funcionar. Sem ele, a arte encostava ao
+   cartão e os dois disputavam o mesmo espaço, que foi o que se via a 80%
+   de zoom: o fundo colado ao login. Com o véu, a arte entra a partir do
+   meio e desvanece-se antes de chegar ao cartão.
 
-   22 KB em WebP, contra 828 KB do PNG original. Numa sala com mil
-   formandos a abrir isto ao mesmo tempo, a diferença conta. */
-.hero-entrar {
+   Fica FORA do <main> de propósito: lá dentro apanhava o `max-width:
+   880px` e voltava a ser uma caixa estreita com a arte espremida. */
+
+.entrada {
+  min-height: calc(100svh - 78px);   /* 78px é o cabeçalho */
+  display: flex;
+  flex-direction: column;
+}
+
+.entrada-palco {
+  flex: 1;
   position: relative;
   display: flex;
   align-items: center;
-  min-height: 480px;
-  border-radius: 28px;
-  overflow: hidden;
-  margin: 1.5rem 0 2.5rem;
+  padding: 3rem 2rem;
+  min-height: 520px;
   background-color: var(--ss-bg);
   background-image: image-set(
     url("marca/subsight-fundo.webp") type("image/webp"),
@@ -135,20 +146,30 @@ h2 { font-size: 1.05rem; margin: 0 0 0.75rem; }
     url("marca/subsight-fundo.webp") type("image/webp"),
     url("marca/subsight-fundo.jpg") type("image/jpeg"));
   background-size: cover;
-  background-position: right center;
+  background-position: center right;
 }
-.hero-entrar-conteudo {
+
+/* o véu: opaco do lado do cartão, transparente do lado da arte */
+.entrada-palco::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(100deg,
+    rgba(255, 255, 255, 0.98) 0%,
+    rgba(255, 255, 255, 0.94) 30%,
+    rgba(255, 255, 255, 0.55) 50%,
+    rgba(255, 255, 255, 0) 70%);
+}
+
+.entrada-cartao {
   position: relative;
   z-index: 1;
-  max-width: 400px;
-  margin: clamp(1rem, 4vw, 3rem);
-  padding: clamp(1.5rem, 3vw, 2rem);
-  background: rgba(255, 255, 255, 0.94);
-  backdrop-filter: blur(6px);
-  border-radius: 20px;
-  box-shadow: 0 12px 32px rgba(24, 24, 24, 0.14);
+  width: 100%;
+  max-width: 420px;
+  margin-left: clamp(0rem, 6vw, 5rem);
 }
-.hero-entrar-eyebrow {
+
+.entrada-sobretitulo {
   font-size: 0.75rem;
   font-weight: 700;
   letter-spacing: 0.07em;
@@ -156,21 +177,76 @@ h2 { font-size: 1.05rem; margin: 0 0 0.75rem; }
   color: var(--ss-destaque-escuro);
   margin: 0 0 0.6rem;
 }
-.hero-entrar-titulo {
-  font-size: clamp(1.6rem, 3vw, 2.1rem);
-  line-height: 1.12;
+.entrada-titulo {
+  font-size: clamp(1.8rem, 3.4vw, 2.5rem);
+  line-height: 1.1;
   margin: 0 0 0.75rem;
 }
-.hero-entrar-sub {
+.entrada-sub {
   color: var(--ss-secundario);
-  font-size: 0.92rem;
-  margin: 0 0 1.5rem;
+  font-size: 0.95rem;
+  line-height: 1.55;
+  margin: 0 0 2rem;
+  max-width: 38ch;
 }
-.hero-entrar-form { max-width: none; margin: 0; box-shadow: none; border: none; padding: 0; }
+.entrada-cartao form { margin-top: 0; }
 
-@media (max-width: 640px) {
-  .hero-entrar { min-height: 0; align-items: stretch; }
-  .hero-entrar-conteudo { margin: 1rem; }
+/* ---- a faixa de valores, por baixo do palco ---- */
+.entrada-valores {
+  background: var(--ss-fundo-suave);
+  border-top: 1px solid var(--ss-borda);
+  padding: 2.5rem 2rem;
+}
+.entrada-valores-grade {
+  max-width: 1100px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 2rem;
+}
+.entrada-valor h3 {
+  font-size: 0.98rem;
+  margin: 0.75rem 0 0.35rem;
+}
+.entrada-valor p {
+  color: var(--ss-secundario);
+  font-size: 0.87rem;
+  line-height: 1.5;
+  margin: 0;
+}
+/* Os ícones da faixa vão por MÁSCARA, não por `filter`. Uma cadeia de
+   filtros é uma forma frágil de acertar numa cor: a que aqui estava dava
+   #FF6E00 em vez do #FF7F00 da marca, 17/255 de diferença no verde, que
+   se vê ao lado do botão. Com máscara, a cor é exatamente a do token.
+
+   O `url()` fica declarado AQUI, no CSS, porque dentro de uma custom
+   property resolve-se relativo à folha onde é declarado. */
+.entrada-valor .icone-marca {
+  display: block;
+  width: 28px; height: 28px;
+  background-color: var(--ss-laranja);
+  -webkit-mask: var(--i) center / contain no-repeat;
+  mask: var(--i) center / contain no-repeat;
+}
+.i-caneta  { --i: url("icons/pen-tool-01.svg"); }
+.i-pessoa  { --i: url("icons/user-profile-01.svg"); }
+.i-escudo  { --i: url("icons/shield-check.svg"); }
+
+@media (max-width: 860px) {
+  /* em ecrã estreito não há espaço para o cartão E a arte lado a lado:
+     a arte passa a fundo esbatido e o cartão ocupa a largura toda */
+  .entrada { min-height: 0; }
+  .entrada-palco {
+    padding: 2rem 1.25rem;
+    min-height: 0;
+    background-position: 78% center;
+  }
+  .entrada-palco::before {
+    background: rgba(255, 255, 255, 0.93);
+  }
+  .entrada-cartao { max-width: none; margin-left: 0; }
+  .entrada-valores { padding: 2rem 1.25rem; }
+  .entrada-valores-grade { grid-template-columns: minmax(0, 1fr); gap: 1.5rem; }
 }
 
 .painel {

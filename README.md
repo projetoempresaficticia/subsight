@@ -73,6 +73,28 @@ O `apple-touch-icon` é composto **sobre branco**, porque o iOS não respeita
 transparência no ícone do ecrã inicial: o que fosse transparente saía
 preto.
 
+### A entrada
+
+Segue o desenho da entrada do Cartório, a pedido do Germano. Três peças:
+
+1. **Palco full-bleed**, FORA do `<main>`. Dentro dele apanhava o
+   `max-width: 880px` e a entrada virava uma caixa estreita com a arte
+   espremida ao lado do cartão de login. Era isso que se via a 80% de
+   zoom: o fundo colado ao formulário.
+2. **Véu em gradiente** por cima da arte, opaco do lado do cartão e
+   transparente do lado direito. É esta a peça que faz o desenho
+   funcionar: sem ela a arte e o cartão disputam o mesmo espaço.
+3. **Faixa de valores** por baixo, com o que a app faz em três linhas.
+
+Em ecrã estreito não há espaço para o cartão e a arte lado a lado: o véu
+passa a opaco, a arte fica como fundo esbatido e o cartão ocupa a largura
+toda.
+
+Os ícones da faixa vão por **máscara**, não por `filter`. Uma cadeia de
+filtros é frágil para acertar numa cor: a primeira tentativa dava
+`#FF6E00` em vez do `#FF7F00` da marca, 17/255 de diferença no verde, que
+se via ao lado do botão. Com máscara a cor é exatamente a do token.
+
 ### Cache
 
 `python ferramentas/versoes.py` carimba os `?v=` e escreve o `versao.json`

@@ -2,14 +2,14 @@
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8" />
-  <meta name="pc-versao" content="675641efc78e" />
+  <meta name="pc-versao" content="2fb55e463243" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Subsight</title>
   <link rel="icon" href="favicon.ico" sizes="any" />
   <link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png" />
   <link rel="apple-touch-icon" href="apple-touch-icon.png" />
   <meta name="theme-color" content="#FF7F00" />
-  <link rel="stylesheet" href="web/estilos.css?v=11e1ecb3" />
+  <link rel="stylesheet" href="web/estilos.css?v=b3c43a72" />
   <script src="web/atualizar.js?v=11b8f9b4"></script>
 </head>
 <body>
@@ -29,25 +29,54 @@
     </nav>
   </header>
 
-  <main>
-    <div id="area-login" class="hero-entrar">
-      <div class="hero-entrar-conteudo">
-        <p class="hero-entrar-eyebrow">Assinatura digital para empresas</p>
-        <h1 class="hero-entrar-titulo">Assine com confiança</h1>
-        <div class="hero-entrar-form">
-          <h2>Entrar</h2>
-          <form id="form-login">
-            <label for="email">Email de login</label>
-            <input id="email" type="email" required />
-            <label for="senha">Senha</label>
-            <input id="senha" type="password" required />
-            <button type="submit" class="destaque">Entrar</button>
-            <p class="msg" id="msg-login"></p>
-          </form>
-        </div>
+  <!-- ENTRADA: fora do <main>, porque tem de ser full-bleed. Dentro dele
+       ficava presa aos 880px e a arte encostava ao cartão de login. -->
+  <div id="area-login" class="entrada">
+    <div class="entrada-palco">
+      <div class="entrada-cartao">
+        <p class="entrada-sobretitulo">Assinatura digital para empresas</p>
+        <h1 class="entrada-titulo">Assine com confiança</h1>
+        <p class="entrada-sub">
+          Documentos com lugares de assinatura definidos à partida, assinados
+          com a cédula de cada um e verificáveis por código.
+        </p>
+
+        <form id="form-login">
+          <label for="email">Email de login</label>
+          <input id="email" type="email" required autocomplete="username"
+                 placeholder="Insira o seu email" />
+          <label for="senha">Senha</label>
+          <input id="senha" type="password" required autocomplete="current-password"
+                 placeholder="Insira a sua senha" />
+          <button type="submit" class="destaque" style="width:100%">Entrar</button>
+          <p class="msg" id="msg-login"></p>
+        </form>
       </div>
     </div>
 
+    <!-- o que o Subsight faz, em três linhas, como no Cartório -->
+    <section class="entrada-valores">
+      <div class="entrada-valores-grade">
+        <div class="entrada-valor">
+          <span class="icone-marca i-caneta" aria-hidden="true"></span>
+          <h3>Lugares definidos à partida</h3>
+          <p>Quem cria o documento diz quantas assinaturas leva e quem assina cada uma.</p>
+        </div>
+        <div class="entrada-valor">
+          <span class="icone-marca i-pessoa" aria-hidden="true"></span>
+          <h3>Assinado com a cédula</h3>
+          <p>Cada assinatura fica ligada à pessoa e à empresa que representa.</p>
+        </div>
+        <div class="entrada-valor">
+          <span class="icone-marca i-escudo" aria-hidden="true"></span>
+          <h3>Verificável por código</h3>
+          <p>Qualquer órgão confere a validade sem precisar de entrar na conta.</p>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <main>
     <div id="area-dashboard" hidden>
       <div class="topo-pagina">
         <h1>Meus documentos</h1>
