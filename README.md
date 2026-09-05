@@ -148,7 +148,7 @@ com o `<meta name="pc-versao">` de cada página. Existe porque o GitHub
 Pages manda `Cache-Control: max-age=600` no HTML e não deixa mudar isso:
 um HTML em cache aponta para os `?v=` velhos e a página fica presa dez
 minutos. O `web/atualizar.js` compara os dois e recarrega quando não
-batem. Copiado do `pp-banco`, onde o problema apareceu primeiro.
+batem. Copiado do `prepacoin`, onde o problema apareceu primeiro.
 
 
 ## O que este repositório fornece
