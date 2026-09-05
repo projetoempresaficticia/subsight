@@ -42,6 +42,25 @@ dele é a tinta, nunca o branco:
 É o mesmo problema que o lima do Prepacoin, e a mesma solução: uma cor
 para preencher, outra, mais escura, para escrever.
 
+### O botão de ação
+
+Rótulo a **branco e centrado**, a pedido do Germano. O branco obriga a
+escurecer o laranja: sobre o `#FF7F00` da marca dá 2,53:1 e não se lê. O
+botão usa por isso o `#C2410C`, o mesmo laranja dos links e eyebrows, que
+com branco por cima dá **5,18:1**.
+
+Fica uma divisão limpa entre os dois laranjas:
+
+| | onde | o que leva por cima |
+|---|---|---|
+| `#FF7F00` | preenchimentos, arte, ícones da faixa | tinta |
+| `#C2410C` | botões de ação, links, eyebrows | branco |
+
+O `justify-content: center` estava em falta: um botão a 100% de largura
+deixava o rótulo encostado à esquerda. E havia **duas** regras de hover no
+`.destaque`, a segunda com um `#c48c4f` herdado da paleta pêssego antiga,
+que anulava a primeira.
+
 ### O que aqui estava e reprovava
 
 Medido antes de trocar, e não era questão de gosto:

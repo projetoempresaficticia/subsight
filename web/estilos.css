@@ -285,6 +285,9 @@ textarea { min-height: 140px; resize: vertical; }
 button, .botao {
   display: inline-flex;
   align-items: center;
+  /* centrado: sem isto, um botão a 100% de largura deixava o rótulo
+     encostado à esquerda, que era o que se via no "Entrar" */
+  justify-content: center;
   gap: 0.4rem;
   margin-top: 1rem;
   background: var(--ss-texto);
@@ -302,12 +305,25 @@ button:disabled { background: var(--ss-secundario); cursor: not-allowed; }
 
 /* laranja com tinta por cima: branco sobre este laranja dá 2,53:1 e
    não se lê */
+/* Rótulo a branco, como o Germano pediu. O branco obriga a escurecer o
+   laranja: sobre o #FF7F00 da marca dá 2,53:1 e não se lê. Este é o
+   mesmo #C2410C que já serve os links e os eyebrows, e com branco por
+   cima dá 5,18:1. Assim o botão fica com o laranja de "coisas que se
+   leem", e o #FF7F00 continua reservado a preenchimentos com tinta.
+
+   (Havia aqui duas regras de hover, e a segunda, um #c48c4f herdado da
+   paleta pêssego antiga, anulava a primeira.) */
 button.destaque, .botao.destaque {
-  background: var(--ss-laranja);
-  color: var(--ss-texto);
+  background: var(--ss-destaque-escuro);
+  color: #fff;
 }
-button.destaque:hover, .botao.destaque:hover { background: #F07300; }
-button.destaque:hover, .botao.destaque:hover { background: #c48c4f; }
+button.destaque:hover, .botao.destaque:hover { background: #A63709; }
+/* o ícone acompanha o rótulo. `brightness(0) invert(1)` dá branco EXATO
+   seja qual for a cor de origem, ao contrário de uma cadeia de filtros a
+   tentar acertar num tom — por isso aqui um filtro serve. */
+button.destaque .icone, .botao.destaque .icone {
+  filter: brightness(0) invert(1);
+}
 
 button.secundario, .botao.secundario {
   background: #fff;
