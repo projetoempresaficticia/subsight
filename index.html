@@ -2,17 +2,20 @@
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8" />
-  <meta name="pc-versao" content="2fb55e463243" />
+  <meta name="pc-versao" content="a3924e4652f7" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Subsight</title>
   <link rel="icon" href="favicon.ico" sizes="any" />
   <link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png" />
   <link rel="apple-touch-icon" href="apple-touch-icon.png" />
   <meta name="theme-color" content="#FF7F00" />
-  <link rel="stylesheet" href="web/estilos.css?v=b3c43a72" />
+  <link rel="stylesheet" href="web/estilos.css?v=14e8533e" />
   <script src="web/atualizar.js?v=11b8f9b4"></script>
 </head>
-<body>
+<!-- a entrada é o que se mostra por omissão; o app.js tira esta classe
+     quando há sessão. Pô-la só por JS deixava um flash com o desenho
+     grande antes de o getSession() resolver. -->
+<body class="ss-modo-entrada">
   <header>
     <div class="cabecalho-marca">
       <div class="icone-app" aria-hidden="true">
@@ -101,6 +104,6 @@
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="https://projetoempresaficticia.github.io/pp-base/web/comum.js"></script>
-  <script src="app.js?v=57745772"></script>
+  <script src="app.js?v=e37e02b4"></script>
 </body>
 </html>

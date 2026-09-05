@@ -95,6 +95,33 @@ filtros é frágil para acertar numa cor: a primeira tentativa dava
 `#FF6E00` em vez do `#FF7F00` da marca, 17/255 de diferença no verde, que
 se via ao lado do botão. Com máscara a cor é exatamente a do token.
 
+### A entrada cabe no ecrã
+
+Rolar para ver o resto de um ecrã de entrada é errado: quem chega quer ver
+de uma vez o que a app faz e onde escreve a senha. A primeira versão pedia
+~800px de altura, e um portátil comum a 100% de zoom deixa **~600px úteis**
+depois das barras do browser.
+
+A correção não é encolher tudo com números fixos, que rebentam noutro
+ecrã. Os espaçamentos acompanham a **altura da janela**, com `svh` (que já
+desconta as barras) e `clamp()` a travar os extremos: num ecrã alto fica
+folgado, num baixo encolhe com dignidade. Abaixo de 700px de altura as
+descrições dos valores saem e ficam só os títulos.
+
+Três detalhes que custaram uma passagem cada:
+
+- **O `<body>` em modo de entrada é uma coluna flex.** Pôr `height:100%` na
+  entrada não servia: ela somava-se ao cabeçalho e transbordava exatamente
+  a altura dele.
+- **A classe `ss-modo-entrada` vem já no HTML**, não só por JS. Posta só
+  pelo `app.js`, havia um flash com o desenho grande antes de o
+  `getSession()` resolver.
+- **Há um piso de 560px de altura.** Prender a altura abaixo disso cortava
+  conteúdo sem deixar rolar, que é pior do que rolar. Nesse caso a página
+  volta ao comportamento normal, tal como no telemóvel.
+
+Mesmo padrão da entrada do Cartório, onde este problema apareceu primeiro.
+
 ### Cache
 
 `python ferramentas/versoes.py` carimba os `?v=` e escreve o `versao.json`

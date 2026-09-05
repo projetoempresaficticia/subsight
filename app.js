@@ -44,13 +44,23 @@ async function carregarDocumentos() {
     .join('');
 }
 
+// A entrada tem de caber num ecrã sem rolar, e as telas de trabalho não
+// têm essa restrição. A classe no <body> é o que diz ao CSS em qual dos
+// dois casos estamos.
+function modoEntrada(ligado) {
+  document.body.classList.toggle('ss-modo-entrada', ligado);
+}
+
 async function verificarSessao() {
   const { data } = await sb.auth.getSession();
   if (data.session) {
     areaLogin.hidden = true;
     areaDashboard.hidden = false;
     navLogado.hidden = false;
+    modoEntrada(false);
     carregarDocumentos();
+  } else {
+    modoEntrada(true);
   }
 }
 
@@ -73,6 +83,7 @@ document.getElementById('btn-sair').addEventListener('click', async () => {
   areaDashboard.hidden = true;
   navLogado.hidden = true;
   areaLogin.hidden = false;
+  modoEntrada(true);
 });
 
 verificarSessao();
